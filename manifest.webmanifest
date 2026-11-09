@@ -1,0 +1,36 @@
+{
+ "name": "Colmena de Juegos",
+ "short_name": "Colmena",
+ "description": "Seis juegos con la abejita Mielina para llegar listos a primer grado.",
+ "lang": "es-AR",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "fullscreen",
+ "orientation": "portrait",
+ "background_color": "#3b2a1a",
+ "theme_color": "#3b2a1a",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-maskable-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

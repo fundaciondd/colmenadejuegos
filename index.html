@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#3b2a1a">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Colmena">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Colmena de Juegos</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700;800&family=Pixelify+Sans:wght@600;700&display=swap">
 <style>
@@ -114,6 +120,18 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
 .diploma .badges-row span{width:44px;height:44px;display:block;image-rendering:pixelated}
 .diploma .badges-row svg{width:100%;height:100%}
 #frame{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:20;background:#1f2d17}
+.linkbtn{background:none;border:0;color:var(--honey);font:700 14px var(--font-body);cursor:pointer;text-decoration:underline;padding:4px}
+.liblist{display:flex;flex-direction:column;gap:10px}
+.lib{background:var(--panel);border:3px solid var(--line);box-shadow:4px 4px 0 var(--line);padding:10px 12px}
+.lib summary{cursor:pointer;font-size:16px;line-height:1.3;list-style:none}
+.lib summary::before{content:'▸ ';color:var(--honey-deep)}
+.lib[open] summary::before{content:'▾ '}
+.lib table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;font-variant-numeric:tabular-nums}
+.lib th,.lib td{text-align:left;padding:5px 4px;border-bottom:1px solid var(--hex);vertical-align:top}
+.lib th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lib td.n{text-align:right}
+.lib .two{margin-top:10px}
+.lib .two .btn{font-size:15px;min-height:44px;padding:8px}
 .hidden{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:360px){.opt{font-size:30px;min-height:66px}.big{font-size:90px}.pic-big{width:120px;height:120px}}
@@ -132,6 +150,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
     <label for="nameIn" class="instr">¿Cómo te llamás?</label>
     <input type="text" id="nameIn" maxlength="20" autocomplete="off" placeholder="TU NOMBRE" aria-label="Tu nombre">
     <button class="btn" id="goBtn">¡A jugar!</button>
+    <p class="foot hidden" id="iosHint">Para jugar a pantalla completa en iPhone: botón Compartir → <b>Agregar a pantalla de inicio</b>, y abrilo desde ahí.</p>
     <div class="voice" id="voiceBox">
       <p class="foot" id="voiceStatus">Buscando la voz en español del teléfono…</p>
       <select id="voiceSel" aria-label="Elegir voz" hidden></select>
@@ -142,8 +161,18 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
   <footer>
     <div>Un proyecto de la <a href="https://www.fundaciondd.org.ar/" rel="noopener">Fundación Darío Donolo</a> · Licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="noopener">CC BY-SA 4.0</a></div>
     <details><summary>Privacidad</summary><p>Los juegos son gratuitos, no tienen publicidad, no usan cookies ni rastreadores y no envían datos a ningún servidor. El nombre que se escribe queda guardado solo en este teléfono, para recordar el progreso.</p></details>
-    <div>Versión 0.6 · Abeja al rescate 0.7</div>
+    <div><button class="linkbtn" id="libretaBtn">📒 Libreta de la seño</button></div>
+    <div>Versión 0.7 · Abeja al rescate 0.7</div>
   </footer>
+</section>
+
+<!-- Libreta de la seño: estadísticas por nombre guardadas en este teléfono -->
+<section class="screen hidden" id="scrLibreta">
+  <div class="topbar"><button class="icon" id="libHome" aria-label="Volver a la portada">🏠</button><h2>Libreta de la seño</h2><button class="icon" id="libCsv" aria-label="Descargar planilla">⬇️</button><button class="icon" id="libCopy" aria-label="Copiar todo">📋</button></div>
+  <p class="instr" style="font-size:16px;font-weight:700;color:var(--muted)">Lo que jugó cada chico en este teléfono. Tocá un nombre para ver el detalle. ⬇️ baja una planilla (CSV) y 📋 copia el texto para pegarlo donde quieras.</p>
+  <div id="libList" class="liblist"></div>
+  <p class="foot" id="libMsg"></p>
+  <p class="foot">Los datos no salen del teléfono. Para juntar los de varios teléfonos, bajá la planilla de cada uno.</p>
 </section>
 
 <!-- Colmena (menú) -->
@@ -151,6 +180,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
   <div class="topbar">
     <button class="icon" id="homeBtn" aria-label="Cambiar nombre">🏠</button>
     <h2 id="hiveTitle">La colmena de …</h2>
+    <button class="icon" id="fsBtn" aria-label="Pantalla completa">⛶</button>
     <button class="icon speak" aria-label="Escuchar">🗣️</button>
     <button class="icon mute" aria-label="Silenciar">🔊</button>
   </div>
@@ -158,7 +188,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
   <div class="hive" id="hiveGrid"></div>
   <div class="toggle">Mover la abeja: <button id="modeTouch" class="on">con el dedo</button><button id="modeTilt">inclinando</button></div>
   <button class="btn green hidden" id="diplomaBtn">Ver mi diploma 🏅</button>
-  <p class="foot">Colmena de Juegos · Versión 0.6</p>
+  <p class="foot">Colmena de Juegos · Versión 0.7</p>
 </section>
 
 <!-- Juego 1: letras del nombre -->
@@ -1185,6 +1215,7 @@ function renderHive(){
   $('diplomaBtn').classList.toggle('hidden',!allDone());
 }
 function finishGame(n,textKey){
+  Stats.end(true);
   S.done['g'+n]=true;saveProgress();S.cur=n;
   $('doneText').textContent=PHR[textKey];
   show('scrDone');
@@ -1201,8 +1232,8 @@ $('goBtn').addEventListener('click',()=>{
 });
 $('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('goBtn').click();});
 try{const last=localStorage.getItem('colmena-last');if(last)$('nameIn').value=last;}catch(e){}
-$('homeBtn').addEventListener('click',()=>show('scrHome'));
-document.querySelectorAll('.back').forEach(b=>b.addEventListener('click',()=>{stopVoice();renderHive();show('scrHive');}));
+$('homeBtn').addEventListener('click',()=>{Stats.abandon();show('scrHome');});
+document.querySelectorAll('.back').forEach(b=>b.addEventListener('click',()=>{stopVoice();Stats.abandon();renderHive();show('scrHive');}));
 $('doneHive').addEventListener('click',()=>{renderHive();show('scrHive');});
 $('doneAgain').addEventListener('click',()=>startGame(S.cur));
 $('diplomaBtn').addEventListener('click',showDiploma);
@@ -1212,7 +1243,7 @@ $('modeTilt').addEventListener('click',async()=>{Snd.resume();const ok=await Til
 function setMode(m){S.mode=m;$('modeTouch').classList.toggle('on',m==='touch');$('modeTilt').classList.toggle('on',m==='tilt');}
 function startGame(n){
   if(n===6){launchRescate();return;}
-  show('scrG'+n);
+  show('scrG'+n);if(n!==2)Stats.start(n);
   activeGame=[null,G1,G2,G3,G4,G5][n].start();
   const s=$('scrG'+n).querySelector('[data-say]');if(s)say(s.dataset.say.split(' '));
 }
@@ -1224,19 +1255,93 @@ function showDiploma(){
 }
 function progDots(id,n,k){const el=$(id);el.innerHTML='';for(let i=0;i<n;i++){const d=document.createElement('i');if(i<k)d.className='on';el.appendChild(d);}}
 
+/* ---------- Estadística por nombre (en este teléfono) ---------- */
+const Stats=(function(){
+  const key=n=>'colmena-stats-'+n;
+  function load(n){try{return JSON.parse(localStorage.getItem(key(n))||'null')||{nombre:n,creado:Date.now(),partidas:[]};}catch(e){return{nombre:n,creado:Date.now(),partidas:[]};}}
+  function save(st){try{localStorage.setItem(key(st.nombre),JSON.stringify(st));}catch(e){}}
+  let cur=null;
+  function end(ok,extra){if(!cur||!S.name)return;const st=load(S.name);const p=Object.assign({g:cur.g,n:cur.nivel,f:new Date().toISOString(),d:Math.round((Date.now()-cur.t0)/1000),e:cur.err,ok:ok?1:0},extra||{});st.partidas.push(p);if(st.partidas.length>400)st.partidas=st.partidas.slice(-400);st.ultimo=Date.now();save(st);cur=null;}
+  return{
+    start(g,nivel){cur={g,nivel:nivel||null,t0:Date.now(),err:0};},
+    err(){if(cur)cur.err++;},
+    end,
+    abandon(){if(cur&&Date.now()-cur.t0>5000)end(false);cur=null;},
+    names(){const out=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('colmena-stats-'))out.push(k.slice(14));}}catch(e){}return out.sort();},
+    load,
+    remove(n){try{localStorage.removeItem(key(n));localStorage.removeItem('colmena-'+n);}catch(e){}}
+  };
+})();
+const GNAME={1:'Letras de mi nombre',2:'Palabras de la colmena',3:'Contá las abejas',4:'Mochila del apicultor',5:'Camino a la flor',6:'Abeja al rescate'};
+function fmtDur(s){return s>=60?Math.floor(s/60)+' min '+(s%60)+' s':s+' s';}
+function libRows(st,prog){
+  let html='<table><tr><th>Juego</th><th class="n">Completas / jugadas</th><th class="n">Errores</th><th>Mejor tiempo</th></tr>';
+  for(let g=1;g<=6;g++){
+    const P=st.partidas.filter(p=>p.g===g);if(!P.length&&!prog['g'+g])continue;
+    const ok=P.filter(p=>p.ok);const best=ok.length?Math.min(...ok.map(p=>p.d)):null;const err=P.reduce((a,p)=>a+p.e,0);
+    let extra='';
+    if(g===2){const lv={};P.forEach(p=>{if(p.n){lv[p.n]=lv[p.n]||{t:0,ok:0};lv[p.n].t++;if(p.ok)lv[p.n].ok++;}});extra=' <small>('+[1,2,3].map(n=>'N'+n+': '+((lv[n]||{}).ok||0)+'/'+((lv[n]||{}).t||0)).join(' · ')+')</small>';}
+    if(g===6){const pts=P.map(p=>p.p||0);extra=' <small>(récord '+(pts.length?Math.max(...pts):0)+' de polen)</small>';}
+    html+='<tr><td>'+(prog['g'+g]?'🍯 ':'')+GNAME[g]+extra+'</td><td class="n">'+ok.length+' / '+P.length+'</td><td class="n">'+err+'</td><td>'+(best!=null?fmtDur(best):'—')+'</td></tr>';
+  }
+  const last=st.partidas.slice(-5).reverse();
+  if(last.length){html+='<tr><th colspan="4">Últimas partidas</th></tr>';last.forEach(p=>{html+='<tr><td colspan="4">'+new Date(p.f).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+' · '+GNAME[p.g]+(p.n?' N'+p.n:'')+' · '+(p.ok?'completó':'no terminó')+' · '+fmtDur(p.d)+' · '+p.e+' err.'+(p.p!=null?' · '+p.p+' polen':'')+'</td></tr>';});}
+  return html+'</table>';
+}
+function renderLibreta(){
+  const names=Stats.names();const el=$('libList');el.innerHTML='';$('libMsg').textContent='';
+  if(!names.length){el.innerHTML='<p class="instr">Todavía no jugó nadie en este teléfono.</p>';return;}
+  names.forEach(n=>{
+    const st=Stats.load(n);let prog={};try{prog=JSON.parse(localStorage.getItem('colmena-'+n)||'{}');}catch(e){}
+    const celdas=GAMES.filter(g=>prog[g.k]).length,P=st.partidas,err=P.reduce((a,p)=>a+p.e,0),last=P.length?new Date(P[P.length-1].f):null;
+    const det=document.createElement('details');det.className='lib';
+    det.innerHTML='<summary><b>'+n+'</b> · '+celdas+'/6 celdas · '+P.length+' partidas · '+err+' errores · '+(last?last.toLocaleDateString('es-AR'):'sin partidas')+'</summary>'+libRows(st,prog)+'<div class="two"><button class="btn soft" data-copy="'+n+'">📋 Copiar</button><button class="btn soft" data-del="'+n+'">🗑️ Borrar</button></div>';
+    el.appendChild(det);
+  });
+  el.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>copyText(csv([b.dataset.copy]),'Copiado: '+b.dataset.copy)));
+  el.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.confirm){Stats.remove(b.dataset.del);renderLibreta();$('libMsg').textContent='Se borraron los datos de '+b.dataset.del+'.';}else{b.dataset.confirm='1';b.textContent='¿Seguro? Tocá de nuevo para borrar';}}));
+}
+function csv(names){
+  const rows=[['nombre','juego','nivel','fecha','hora','duracion_seg','errores','completo','puntos']];
+  (names||Stats.names()).forEach(n=>{Stats.load(n).partidas.forEach(p=>{const d=new Date(p.f);rows.push([n,GNAME[p.g],p.n||'',d.toLocaleDateString('es-AR'),d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}),p.d,p.e,p.ok?'si':'no',p.p!=null?p.p:'']);});});
+  return rows.map(r=>r.map(v=>/[;"\n]/.test(String(v))?'"'+String(v).replace(/"/g,'""')+'"':v).join(';')).join('\n');
+}
+function copyText(txt,msg){const done=()=>{$('libMsg').textContent=msg;};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(()=>fallbackCopy(txt,done));}else fallbackCopy(txt,done);}
+function fallbackCopy(txt,done){const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){$('libMsg').textContent='No se pudo copiar en este navegador.';}document.body.removeChild(ta);}
+$('libretaBtn').addEventListener('click',()=>{renderLibreta();show('scrLibreta');});
+$('libHome').addEventListener('click',()=>show('scrHome'));
+$('libCopy').addEventListener('click',()=>copyText(csv(),'Copiado el resumen de todos los nombres.'));
+$('libCsv').addEventListener('click',()=>{try{const blob=new Blob(['\ufeff'+csv()],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='colmena-de-juegos-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);$('libMsg').textContent='Planilla descargada (CSV, se abre con Excel o Google Sheets).';}catch(e){$('libMsg').textContent='No se pudo descargar; usá Copiar.';}});
+
+/* ---------- Pantalla completa e instalación ---------- */
+(function(){
+  const d=document.documentElement,btn=$('fsBtn');
+  const req=d.requestFullscreen||d.webkitRequestFullscreen,exit=document.exitFullscreen||document.webkitExitFullscreen;
+  const isFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+  const standalone=window.matchMedia('(display-mode: standalone)').matches||window.matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
+  if(!req||standalone)btn.hidden=true;
+  const ios=/iPhone|iPad|iPod/.test(navigator.userAgent);
+  if(ios&&!standalone)$('iosHint').classList.remove('hidden');
+  btn.addEventListener('click',()=>{try{if(isFs())exit.call(document);else{const r=req.call(d,{navigationUI:'hide'});if(r&&r.catch)r.catch(()=>{});}}catch(e){}});
+  const sync=()=>{btn.textContent=isFs()?'🡼':'⛶';btn.setAttribute('aria-label',isFs()?'Salir de pantalla completa':'Pantalla completa');};
+  document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
+  // instalable y sin conexión: el archivo sw.js se publica junto con index.html (no hace falta para jugar)
+  if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){try{navigator.serviceWorker.register('sw.js').catch(()=>{});}catch(e){}}
+})();
+
 /* ---------- Abeja al rescate: vive en una plantilla dentro de este archivo y corre en un marco ---------- */
 const frame=$('frame');
 function launchRescate(){
   const tpl=$('tpl-abeja-al-rescate');if(!tpl)return;
-  stopVoice();
+  stopVoice();Stats.start(6);
   frame.srcdoc='<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"><script>window.COLMENA={facil:true};<\/script></head><body>'+tpl.innerHTML+'</body></html>';
   frame.hidden=false;try{history.pushState({game:'rescate'},'');}catch(e){}frame.focus();
 }
-function closeRescate(){frame.hidden=true;frame.srcdoc='';renderHive();show('scrHive');if(allDone()&&!S.diplomaShown){S.diplomaShown=true;}}
+function closeRescate(){Stats.abandon();frame.hidden=true;frame.srcdoc='';renderHive();show('scrHive');}
 window.addEventListener('popstate',()=>{if(!frame.hidden)closeRescate();});
 window.addEventListener('message',e=>{
   if(e.source!==frame.contentWindow||!e.data)return;
-  if(e.data.colmena==='resultado'&&e.data.gano&&!S.done.g6){S.done.g6=true;saveProgress();}
+  if(e.data.colmena==='resultado'){Stats.end(!!e.data.gano,{p:e.data.puntos,nv:e.data.nivel});if(e.data.gano&&!S.done.g6){S.done.g6=true;saveProgress();}}
   if(e.data.colmena==='portada'){if(history.state&&history.state.game)history.back();else closeRescate();}
 });
 
@@ -1289,7 +1394,7 @@ const G1=(function(){
     spawnT-=dt;sinceTarget+=dt;
     if(spawnT<=0){spawnT=0.95;spawn(sinceTarget>2.6);}
     items.forEach(it=>{it.y+=it.vy*dt;});
-    for(const it of items){if(Math.hypot(it.x-bee.x,it.y-bee.y)<34){it.dead=true;if(it.ch===target){Snd.pick();idx++;renderSlots();setTarget();}else{Snd.buzz();wrongFlash=0.35;}}}
+    for(const it of items){if(Math.hypot(it.x-bee.x,it.y-bee.y)<34){it.dead=true;if(it.ch===target){Snd.pick();idx++;renderSlots();setTarget();}else{Snd.buzz();wrongFlash=0.35;Stats.err();}}}
     items=items.filter(it=>!it.dead&&it.y<H+40);
     if(wrongFlash>0)wrongFlash-=dt;
     ctx.clearRect(0,0,W,H);
@@ -1330,14 +1435,14 @@ const G2=(function(){
     L2.forEach(l=>{const b=document.createElement('button');b.className='lvbtn';b.innerHTML='<span class="n">'+l.n+'</span><span><span class="t">'+l.t+'</span><br><span class="d">'+l.d+'</span></span><span class="k">'+(S.done['g2-'+l.n]?'🍯':'')+'</span>';b.addEventListener('click',()=>{Snd.resume();Snd.tap();startLevel(l);});el.appendChild(b);});
   }
   function startLevel(l){
-    lv=l;rounds=pickN(l.words,6);k=0;
+    lv=l;rounds=pickN(l.words,6);k=0;Stats.start(2,l.n);
     $('g2Levels').classList.add('hidden');$('g2Card').classList.remove('hidden');$('g2Prog').classList.remove('hidden');
     const ik=l.tipo==='inicial'?'g2-instr-inicial':'g2-instr-silabas';
     $('g2Instr').textContent=PHR[ik].replace(/\.$/,'');$('g2Instr').dataset.say=ik;say(ik);
     setTimeout(next,1800);
   }
   function next(){
-    if(k>=rounds.length){S.done['g2-'+lv.n]=true;saveProgress();if(L2.every(l=>S.done['g2-'+l.n]))finishGame(2,'g2-fin');else{Snd.win();say(['muy-bien']);menu();}return;}
+    if(k>=rounds.length){S.done['g2-'+lv.n]=true;saveProgress();Stats.end(true);if(L2.every(l=>S.done['g2-'+l.n]))finishGame(2,'g2-fin');else{Snd.win();say(['muy-bien']);menu();}return;}
     cur=rounds[k];busy=false;progDots('g2Prog',rounds.length,k);
     const wd=W2[cur];$('g2Pic').innerHTML=svg(cur);$('g2Word').innerHTML='&nbsp;';
     const el=$('g2Opts');el.innerHTML='';el.classList.toggle('four',lv.opts===4);
@@ -1355,7 +1460,7 @@ const G2=(function(){
       if(lv.tipo==='inicial'){$('g2Word').innerHTML='<b>'+wd.w[0]+'</b>'+wd.w.slice(1);say(['si','w-'+cur,'empieza-con','letra-'+wd.w[0]]);}
       else{$('g2Word').innerHTML=wd.s.map(x=>'<b>'+x+'</b>').join('·');say(['si','w-'+cur,'tiene','silaba-'+correct]);}
       k++;setTimeout(next,2000);}
-    else{b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');Snd.bad();say(lv.tipo==='silabas'?['proba-otra','s-'+cur]:['proba-otra','w-'+cur],lv.tipo==='silabas'?0.75:0.9);}
+    else{Stats.err();b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');Snd.bad();say(lv.tipo==='silabas'?['proba-otra','s-'+cur]:['proba-otra','w-'+cur],lv.tipo==='silabas'?0.75:0.9);}
   }
   return{start(){$('g2Hear').onclick=()=>{Snd.resume();if(cur&&!$('g2Card').classList.contains('hidden'))say(lv.tipo==='silabas'?['w-'+cur,'s-'+cur]:['w-'+cur],lv.tipo==='silabas'?0.75:0.9);};cur=null;menu();return this;}};
 })();
@@ -1383,7 +1488,7 @@ const G3=(function(){
     $('g3Instr').textContent='¿Cuántas abejas fueron a la colmena?';say('cuantas-abejas');
     const opts=[n];while(opts.length<3){const v=n+ri(-2,2);if(v>=1&&v<=10&&!opts.includes(v))opts.push(v);}
     shuffle(opts);const el=$('g3Opts');el.innerHTML='';
-    opts.forEach(v=>{const b=document.createElement('button');b.className='opt';b.textContent=v;b.addEventListener('click',()=>{if(busy)return;if(v===n){busy=true;b.classList.add('ok');Snd.ok();say(['si','num-'+n,'abejas']);k++;setTimeout(next,1500);}else{b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');Snd.bad();say(['conta-de-nuevo','habia','num-'+n]);}});el.appendChild(b);});
+    opts.forEach(v=>{const b=document.createElement('button');b.className='opt';b.textContent=v;b.addEventListener('click',()=>{if(busy)return;if(v===n){busy=true;b.classList.add('ok');Snd.ok();say(['si','num-'+n,'abejas']);k++;setTimeout(next,1500);}else{Stats.err();b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');Snd.bad();say(['conta-de-nuevo','habia','num-'+n]);}});el.appendChild(b);});
   }
   return{start(){rounds=[ri(1,3),ri(2,5),ri(3,5),ri(4,5),ri(5,7),ri(6,8),ri(7,10),ri(8,10)];k=0;next();return this;}};
 })();
@@ -1406,7 +1511,7 @@ const G4=(function(){
     if(busy)return;busy=true;Snd.resume();
     const it=cur,name=it.art+' '+it.w.toLowerCase();let keys,txt;
     if(yes===it.si){Snd.ok();keys=['si','it-'+it.k,it.si?'va-mochila':'queda-casa'];txt='¡Sí! '+name+' '+PHR[it.si?'va-mochila':'queda-casa'];}
-    else{Snd.bad();$('g4Fb').style.color='var(--bad)';
+    else{Stats.err();Snd.bad();$('g4Fb').style.color='var(--bad)';
       if(it.k==='perfume'){keys=['mmm','it-'+it.k,'queda-casa','perfume-no'];}
       else keys=['mmm','it-'+it.k,it.si?'va-mochila':'queda-casa',it.si?'lo-necesitas':'no-va-apiario'];
       txt='Mmm… '+name+' '+keys.slice(2).map(x=>PHR[x]).join(' ');}
@@ -1435,7 +1540,7 @@ const G5=(function(){
   function reset(key){drawing=false;prog=0;trail=[];Snd.buzz();if(key)say(key);}
   function pos(e){const r=c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
   function onDown(e){const p=pos(e);if(Math.hypot(p.x-pts[0].x,p.y-pts[0].y)<44){drawing=true;prog=0;trail=[pts[0]];Snd.tap();}else{say('empeza-abeja');}}
-  function onMove(e){if(!drawing)return;const p=pos(e);const n=nearest(p.x,p.y,prog);if(n.d>34){fails++;reset(fails%2===0?'despacito':'uy');return;}prog=Math.max(prog,n.i);trail.push(p);if(prog>=pts.length-3&&Math.hypot(p.x-pts[pts.length-1].x,p.y-pts[pts.length-1].y)<40)done();}
+  function onMove(e){if(!drawing)return;const p=pos(e);const n=nearest(p.x,p.y,prog);if(n.d>34){fails++;Stats.err();reset(fails%2===0?'despacito':'uy');return;}prog=Math.max(prog,n.i);trail.push(p);if(prog>=pts.length-3&&Math.hypot(p.x-pts[pts.length-1].x,p.y-pts[pts.length-1].y)<40)done();}
   function onUp(){if(drawing&&prog<pts.length-3)reset('sin-levantar');}
   function done(){drawing=false;prog=pts.length-1;Snd.pick();say('llegaste');k++;const nk=k;setTimeout(()=>{if(!running)return;if(nk>=paths.length){running=false;cancelAnimationFrame(raf);finishGame(5,'g5-fin');}else{setPath();say(['camino','num-'+(k+1),'camino-'+paths[k]]);}},1400);}
   function loop(now){

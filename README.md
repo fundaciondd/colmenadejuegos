@@ -15,16 +15,24 @@ Seis juegos para chicos de 5 y 6 años, pensados para el pasaje del jardín a pr
 
 Al llenar las seis celdas de miel, la colmena entrega el diploma de abejita de primero.
 
+## Archivos
+
+- `index.html` · la app completa (basta con este archivo para jugar).
+- `manifest.webmanifest`, `sw.js`, `icon-*.png` · instalación y uso sin conexión.
+
 ## Características
 
 - Un único archivo `index.html`, sin dependencias ni servidor; una vez cargado sigue funcionando sin conexión.
 - Consignas leídas en voz alta (voz del teléfono en español), sonidos y música generados en el propio juego.
 - Gráficos en pixel art propios.
 - Sin publicidad, sin registro, sin cookies ni rastreadores: no se envía ningún dato a ningún servidor. El nombre del chico queda guardado solo en el teléfono, para recordar su progreso.
-- Se juega desde el navegador del celular; conviene abrirlo desde el link (https) para que funcionen los sensores y la voz, y agregarlo a la pantalla de inicio.
+- Se juega desde el navegador del celular; conviene abrirlo desde el link (https) para que funcionen los sensores y la voz. Se puede instalar ("Agregar a pantalla de inicio"): abre a pantalla completa y funciona sin conexión.
+- Botón ⛶ de pantalla completa en la colmena (Android y computadora). En iPhone, la pantalla completa se logra instalándola.
+- **Libreta de la seño** (en la portada): resumen por nombre de lo jugado en ese teléfono (partidas, errores, tiempos, récord), con copia y descarga en planilla CSV. Nada sale del teléfono.
 
 ## Versiones
 
+- 0.7 (noviembre 2026) · pantalla completa, instalable y sin conexión (manifiesto + `sw.js`), Libreta de la seño con estadística por nombre y planilla CSV.
 - 0.6 (noviembre 2026) · pixel art, seis juegos, diploma. Abeja al rescate 0.7.
 
 ## Créditos y licencia
