@@ -45,7 +45,11 @@ input[type=text]:focus{outline:3px solid var(--honey-deep);outline-offset:2px}
 .foot{font-size:12px;color:var(--muted);text-align:center;margin:0}
 .foot a{color:var(--honey-deep);font-weight:800;text-decoration:none}
 /* home (cover) */
-#scrHome{background:var(--dark) radial-gradient(ellipse at 50% -10%,#5a4020 0,var(--dark) 55%,var(--dark-2) 100%);color:var(--fg-on-dark);align-items:center;justify-content:center;gap:14px}
+#scrHome{background:var(--dark) radial-gradient(ellipse at 50% -10%,#5a4020 0,var(--dark) 55%,var(--dark-2) 100%);color:var(--fg-on-dark);align-items:center;justify-content:center;justify-content:safe center;gap:14px;padding-top:calc(64px + env(safe-area-inset-top,0px))}
+#scrHome>*:first-child+.emblem{margin-top:0}
+.fspill{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:16px;background:var(--panel);color:var(--fg);border:3px solid var(--line);box-shadow:4px 4px 0 var(--line);font:800 15px var(--font-body);padding:10px 14px;cursor:pointer;z-index:2;max-width:calc(100% - 32px)}
+.fspill:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--line)}
+.fspill:focus-visible{outline:3px solid var(--honey);outline-offset:2px}
 #scrHome .emblem{width:128px;height:128px;max-width:100%;image-rendering:pixelated}
 #scrHome .emblem svg{width:100%;height:100%;display:block}
 #scrHome h1{color:var(--honey);text-shadow:3px 3px 0 #000}
@@ -143,6 +147,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
 
 <!-- Portada -->
 <section class="screen" id="scrHome">
+  <button class="fspill" id="fsBtnHome">⛶ Pantalla completa</button>
   <div class="emblem" id="emblem" role="img" aria-label="Emblema: Mielina, la abeja"></div>
   <h1>Colmena de Juegos <small>Seis juegos con la abejita Mielina</small></h1>
   <p class="lead">Para llegar listos a primer grado: letras, sonidos, números, trazos, el apiario… y un vuelo de rescate.</p>
@@ -163,7 +168,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
     <div>Un proyecto de la <a href="https://www.fundaciondd.org.ar/" rel="noopener">Fundación Darío Donolo</a> · Licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="noopener">CC BY-SA 4.0</a></div>
     <details><summary>Privacidad</summary><p>Los juegos son gratuitos, no tienen publicidad ni rastreadores de terceros. El nombre que se escribe y las partidas quedan guardados solo en este teléfono. La Fundación cuenta de forma anónima cuántas veces se abre el juego (sin nombres ni datos personales). Los resultados del Panal de honor se suben únicamente si alguien marca la casilla de permiso.</p></details>
     <div><button class="linkbtn" id="libretaBtn">📒 Libreta de la seño</button> · <button class="linkbtn" id="panalBtn2">🏆 Panal de honor</button></div>
-    <div>Versión 0.8 · Abeja al rescate 0.8</div>
+    <div>Versión 0.9 · Abeja al rescate 0.8</div>
   </footer>
 </section>
 
@@ -203,7 +208,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
   <div class="toggle">Mover la abeja: <button id="modeTouch" class="on">con el dedo</button><button id="modeTilt">inclinando</button></div>
   <button class="btn green hidden" id="diplomaBtn">Ver mi diploma 🏅</button>
   <button class="btn soft" id="panalBtn">🏆 Panal de honor</button>
-  <p class="foot">Colmena de Juegos · Versión 0.8</p>
+  <p class="foot">Colmena de Juegos · Versión 0.9</p>
 </section>
 
 <!-- Juego 1: letras del nombre -->
@@ -1404,7 +1409,7 @@ const GAMES=[
   {n:5,k:'g5',nm:'Camino a la flor',st:'Seguí el camino con el dedo',pic:'flor'},
   {n:6,k:'g6',nm:'Abeja al rescate',st:'Inclinás el celular y volás',pic:'abeja'}
 ];
-const VERSION='0.8';
+const VERSION='0.9';
 const S={name:'',letters:[],mode:'touch',done:{},cur:0};
 /* ---------- Configuración externa (config.json junto a index.html) y envío a la planilla de la Fundación ---------- */
 const CFG={endpoint:''};
@@ -1560,18 +1565,27 @@ $('panalBtn2').addEventListener('click',()=>{Snd.resume();renderPanal();show('sc
 
 /* ---------- Pantalla completa e instalación ---------- */
 (function(){
-  const d=document.documentElement,btn=$('fsBtn');
+  const d=document.documentElement,btns=[$('fsBtn'),$('fsBtnHome')];
   const req=d.requestFullscreen||d.webkitRequestFullscreen,exit=document.exitFullscreen||document.webkitExitFullscreen;
   const isFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
   const standalone=window.matchMedia('(display-mode: standalone)').matches||window.matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
   const enabled=document.fullscreenEnabled!==false&&document.webkitFullscreenEnabled!==false&&!!req;
-  if(standalone)btn.hidden=true;
-  if(!enabled&&!standalone){btn.textContent='↗';btn.setAttribute('aria-label','Abrir en una ventana propia para jugar a pantalla completa');}
   const ios=/iPhone|iPad|iPod/.test(navigator.userAgent);
   if(ios&&!standalone)$('iosHint').classList.remove('hidden');
-  btn.addEventListener('click',()=>{if(!enabled){window.open(location.href,'_blank','noopener');return;}try{if(isFs())exit.call(document);else{const r=req.call(d,{navigationUI:'hide'});if(r&&r.catch)r.catch(()=>{});}}catch(e){}});
-  const sync=()=>{btn.textContent=isFs()?'🡼':'⛶';btn.setAttribute('aria-label',isFs()?'Salir de pantalla completa':'Pantalla completa');};
-  document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
+  if(standalone||(ios&&!enabled))btns.forEach(b=>b.hidden=true);
+  function sync(){
+    const fs=isFs();
+    const label=!enabled?'Abrir en ventana completa':fs?'Salir de pantalla completa':'Pantalla completa';
+    const ico=!enabled?'↗':fs?'🡼':'⛶';
+    $('fsBtn').textContent=ico;$('fsBtn').setAttribute('aria-label',label);
+    $('fsBtnHome').textContent=ico+' '+label;
+  }
+  function toggle(){
+    if(!enabled){window.open(location.href,'_blank','noopener');return;}
+    try{if(isFs())exit.call(document);else{const r=req.call(d,{navigationUI:'hide'});if(r&&r.catch)r.catch(()=>{});}}catch(e){}
+  }
+  btns.forEach(b=>b.addEventListener('click',toggle));
+  document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);sync();
   // instalable y sin conexión: el archivo sw.js se publica junto con index.html (no hace falta para jugar)
   if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){try{navigator.serviceWorker.register('sw.js').catch(()=>{});}catch(e){}}
 })();

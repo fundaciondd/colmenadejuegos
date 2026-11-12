@@ -34,6 +34,8 @@ Al llenar las seis celdas de miel, la colmena entrega el diploma de abejita de p
 
 ## Versiones
 
+- 0.9 (noviembre 2026) · botón "Pantalla completa" con texto en la portada.
+
 - 0.8 (noviembre 2026) · Mielina y los objetos de la mochila redibujados en 24×24; la voz termina cada frase antes de seguir (un toque adelanta); números en letra clara; pantalla completa también desde una ventana embebida (abre en pestaña propia); columna centrada en computadora; **Panal de honor** (los 20 mejores del teléfono) con subida opcional a la planilla de la Fundación y conteo anónimo de aperturas, ambos configurables en `config.json` (ver `planilla/INSTRUCCIONES.md`).
 
 - 0.7 (noviembre 2026) · pantalla completa, instalable y sin conexión (manifiesto + `sw.js`), Libreta de la seño con estadística por nombre y planilla CSV.
