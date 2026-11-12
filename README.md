@@ -19,6 +19,8 @@ Al llenar las seis celdas de miel, la colmena entrega el diploma de abejita de p
 
 - `index.html` · la app completa (basta con este archivo para jugar).
 - `manifest.webmanifest`, `sw.js`, `icon-*.png` · instalación y uso sin conexión.
+- `config.json` · dirección del receptor de resultados (vacío = no se envía nada).
+- `planilla/` · script de Google Apps Script que recibe aperturas y rankings en una hoja de cálculo, con instrucciones.
 
 ## Características
 
@@ -31,6 +33,8 @@ Al llenar las seis celdas de miel, la colmena entrega el diploma de abejita de p
 - **Libreta de la seño** (en la portada): resumen por nombre de lo jugado en ese teléfono (partidas, errores, tiempos, récord), con copia y descarga en planilla CSV. Nada sale del teléfono.
 
 ## Versiones
+
+- 0.8 (noviembre 2026) · Mielina y los objetos de la mochila redibujados en 24×24; la voz termina cada frase antes de seguir (un toque adelanta); números en letra clara; pantalla completa también desde una ventana embebida (abre en pestaña propia); columna centrada en computadora; **Panal de honor** (los 20 mejores del teléfono) con subida opcional a la planilla de la Fundación y conteo anónimo de aperturas, ambos configurables en `config.json` (ver `planilla/INSTRUCCIONES.md`).
 
 - 0.7 (noviembre 2026) · pantalla completa, instalable y sin conexión (manifiesto + `sw.js`), Libreta de la seño con estadística por nombre y planilla CSV.
 - 0.6 (noviembre 2026) · pixel art, seis juegos, diploma. Abeja al rescate 0.7.

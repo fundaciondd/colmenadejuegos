@@ -97,7 +97,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
 .levels{display:flex;flex-direction:column;gap:12px}
 .lvbtn{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:12px;text-align:left;background:var(--panel);border:3px solid var(--line);border-radius:0;padding:14px;box-shadow:4px 4px 0 var(--line);cursor:pointer;color:var(--fg);font-family:var(--font-body)}
 .lvbtn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--line)}
-.lvbtn .n{font:700 32px var(--font-pixel);color:var(--honey-deep);text-align:center;text-shadow:2px 2px 0 var(--line)}
+.lvbtn .n{font:800 34px var(--font-display);color:var(--honey-deep);text-align:center}
 .lvbtn .t{font-weight:800;font-size:18px;line-height:1.15}
 .lvbtn .d{font-size:13px;color:var(--muted)}
 .lvbtn .k{font-size:24px}
@@ -107,7 +107,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
 .field .bee{position:absolute;width:64px;height:64px;image-rendering:pixelated;border:0;background:transparent;cursor:pointer;transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .7s;padding:0}
 .field .bee svg{width:100%;height:100%;display:block}
 .field .bee.gone{opacity:0;pointer-events:none}
-.counter{font:700 56px var(--font-pixel);text-align:center;line-height:1;margin:0;color:var(--honey-deep);text-shadow:3px 3px 0 var(--line);font-variant-numeric:tabular-nums}
+.counter{font:800 64px var(--font-display);text-align:center;line-height:1;margin:0;color:var(--honey-deep);font-variant-numeric:tabular-nums}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .two .btn{font-size:19px;padding:14px 8px;line-height:1.15}
 .prog{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
@@ -115,7 +115,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
 .prog i.on{background:var(--honey)}
 .center{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:16px;text-align:center}
 .diploma{background:var(--panel);border:4px solid var(--line);outline:4px solid var(--honey);outline-offset:4px;border-radius:0;padding:22px 18px;text-align:center;display:flex;flex-direction:column;gap:10px}
-.diploma .nm{font:700 34px var(--font-pixel);text-shadow:2px 2px 0 var(--line);color:var(--honey-deep);text-transform:uppercase;line-height:1.1;overflow-wrap:anywhere}
+.diploma .nm{font:800 36px var(--font-display);color:var(--honey-deep);text-transform:uppercase;line-height:1.1;overflow-wrap:anywhere}
 .diploma .badges-row{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
 .diploma .badges-row span{width:44px;height:44px;display:block;image-rendering:pixelated}
 .diploma .badges-row svg{width:100%;height:100%}
@@ -134,6 +134,7 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
 .lib .two .btn{font-size:15px;min-height:44px;padding:8px}
 .hidden{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (min-width:860px){.screen{left:50%;right:auto;width:600px;transform:translateX(-50%);box-shadow:0 0 0 4px var(--line),0 0 60px rgba(0,0,0,.25)}#frame{left:50%;width:600px;transform:translateX(-50%)}}
 @media (max-width:360px){.opt{font-size:30px;min-height:66px}.big{font-size:90px}.pic-big{width:120px;height:120px}}
 </style>
 </head>
@@ -160,9 +161,9 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
   </div>
   <footer>
     <div>Un proyecto de la <a href="https://www.fundaciondd.org.ar/" rel="noopener">Fundación Darío Donolo</a> · Licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" rel="noopener">CC BY-SA 4.0</a></div>
-    <details><summary>Privacidad</summary><p>Los juegos son gratuitos, no tienen publicidad, no usan cookies ni rastreadores y no envían datos a ningún servidor. El nombre que se escribe queda guardado solo en este teléfono, para recordar el progreso.</p></details>
-    <div><button class="linkbtn" id="libretaBtn">📒 Libreta de la seño</button></div>
-    <div>Versión 0.7 · Abeja al rescate 0.7</div>
+    <details><summary>Privacidad</summary><p>Los juegos son gratuitos, no tienen publicidad ni rastreadores de terceros. El nombre que se escribe y las partidas quedan guardados solo en este teléfono. La Fundación cuenta de forma anónima cuántas veces se abre el juego (sin nombres ni datos personales). Los resultados del Panal de honor se suben únicamente si alguien marca la casilla de permiso.</p></details>
+    <div><button class="linkbtn" id="libretaBtn">📒 Libreta de la seño</button> · <button class="linkbtn" id="panalBtn2">🏆 Panal de honor</button></div>
+    <div>Versión 0.8 · Abeja al rescate 0.8</div>
   </footer>
 </section>
 
@@ -172,7 +173,20 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
   <p class="instr" style="font-size:16px;font-weight:700;color:var(--muted)">Lo que jugó cada chico en este teléfono. Tocá un nombre para ver el detalle. ⬇️ baja una planilla (CSV) y 📋 copia el texto para pegarlo donde quieras.</p>
   <div id="libList" class="liblist"></div>
   <p class="foot" id="libMsg"></p>
-  <p class="foot">Los datos no salen del teléfono. Para juntar los de varios teléfonos, bajá la planilla de cada uno.</p>
+  <p class="foot">Los datos no salen del teléfono. Para juntar los de varios teléfonos, bajá la planilla de cada uno o usá el Panal de honor.</p>
+</section>
+
+<!-- Panal de honor: los 20 mejores de este teléfono, con opción de compartirlos -->
+<section class="screen hidden" id="scrPanal">
+  <div class="topbar"><button class="icon back" aria-label="Volver a la colmena">🏠</button><h2>Panal de honor</h2><button class="icon speak" aria-label="Escuchar">🗣️</button><button class="icon mute" aria-label="Silenciar">🔊</button></div>
+  <p class="instr" data-say="=Estos son los veinte mejores de este teléfono.">Los 20 mejores de este teléfono</p>
+  <div class="lib" id="panalList"></div>
+  <div class="card" id="shareBox">
+    <p class="instr" style="font-size:17px">¿Compartimos estos resultados con la Fundación?</p>
+    <label class="foot" style="display:flex;gap:10px;align-items:flex-start;text-align:left;font-size:14px;cursor:pointer"><input type="checkbox" id="shareOk" style="width:22px;height:22px;flex:none"> <span>Sí, subir los 20 mejores: solo el nombre que se escribió en el juego, las celdas, los puntajes y la fecha. Nada más sale del teléfono. Si no se marca, todo queda solo acá.</span></label>
+    <button class="btn green" id="shareBtn" disabled>Subir los mejores 20</button>
+    <p class="foot" id="shareMsg"></p>
+  </div>
 </section>
 
 <!-- Colmena (menú) -->
@@ -188,7 +202,8 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
   <div class="hive" id="hiveGrid"></div>
   <div class="toggle">Mover la abeja: <button id="modeTouch" class="on">con el dedo</button><button id="modeTilt">inclinando</button></div>
   <button class="btn green hidden" id="diplomaBtn">Ver mi diploma 🏅</button>
-  <p class="foot">Colmena de Juegos · Versión 0.7</p>
+  <button class="btn soft" id="panalBtn">🏆 Panal de honor</button>
+  <p class="foot">Colmena de Juegos · Versión 0.8</p>
 </section>
 
 <!-- Juego 1: letras del nombre -->
@@ -274,8 +289,8 @@ canvas.stage-canvas{position:absolute;inset:0;width:100%;height:100%;display:blo
 </section>
 
 <script>
-/* Banco de sprites de Colmena de Juegos · pixel art 16×16.
-   Cada sprite es una lista de 16 cadenas de 16 caracteres; cada carácter es un color de PAL ('.' = transparente).
+/* Banco de sprites de Colmena de Juegos · pixel art (16×16 y 24×24).
+   Cada sprite es una lista de N cadenas de N caracteres; cada carácter es un color de PAL ('.' = transparente).
    Se comparte entre la app y Abeja al rescate (build.py lo inserta en los dos). */
 window.PIX=(function(){
 const PAL={
@@ -286,90 +301,130 @@ const PAL={
 };
 const S={
 abeja:[
-"................",
-"...........k.k..",
-".....www....k...",
-"....wwwww..kkk..",
-"...wwwwwww.kkkk.",
-"..kkkkkkkkkkkkk.",
-".kyykyykyykkkwk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkk..",
-"..kkkkkkkk.kk...",
-"...k.k..k.......",
-"..k...k..k......",
-"................",
-"................",
-"................"],
+"........................",
+".........ddddd..........",
+"......dddWWWWWd.....k...",
+".....dwdWWWWWWWd....k..k",
+"....dwwdWWWWWWWd....k..k",
+"...dwwwdWWWWWWWd....k.k.",
+"...dwwwwdWWWWWd....k..k.",
+"....dwwwwddddd....kkkk..",
+".....dkkkkkkk....kkkkk..",
+"....kkyykkyykkk.kkkwwkk.",
+"...kkkyykkyykkykkkkwkkkk",
+"..kykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkykkkkkkkkk",
+"kkyykkyykkyykkykkkKkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+".....kkkkkkkkk..........",
+".....k...k...k..........",
+"....k...k...k...........",
+"....k...k...k...........",
+"........................"],
 abeja2:[
-"................",
-"...........k.k..",
-"............k...",
-"...........kkk..",
-"..kkkkkkkkkkkkk.",
-".kwwwwwwwwkkkkk.",
-".kwwwwwwwwkkkwk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkk..",
-"..kkkkkkkk.kk...",
-"...k.k..k.......",
-"..k...k..k......",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"....................k...",
+"....................k..k",
+"........dddddd......k..k",
+".....dddWWWWWWd.....k.k.",
+"...ddwdWWWWWWWWd...k..k.",
+"..dwwwdWWWWWWWWd..kkkk..",
+"..dwwwkkkkkkkWd..kkkkk..",
+"...dkkyykkyykkk.kkkwwkk.",
+"...kkkyykkyykkykkkkwkkkk",
+"..kykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkykkkkkkkkk",
+"kkyykkyykkyykkykkkKkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+".....kkkkkkkkk..........",
+".....k...k...k..........",
+"....k...k...k...........",
+"....k...k...k...........",
+"........................"],
 reina:[
-"...........Y.Y..",
-"...........YYY..",
-".....www...YYY..",
-"....wwwww..kkk..",
-"...wwwwwww.kkkk.",
-"..kkkkkkkkkkkkk.",
-".kyykyykyykkkwk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkk..",
-"..kkkkkkkk.kk...",
-"...k.k..k.......",
-"..k...k..k......",
-"................",
-"................",
-"................"],
+"...................o....",
+".........ddddd.o...oo..o",
+"......dddWWWWWdoo.oYo.oo",
+".....dwdWWWWWWWoo.oYYooo",
+"....dwwdWWWWWWWoYoYYYoYo",
+"...dwwwdWWWWWWWoYYYYYYYo",
+"...dwwwwdWWWWWdooooooooo",
+"....dwwwwddddd....kkkk..",
+".....dkkkkkkk....kkkkk..",
+"....kkyykkyykkk.kkkwwkk.",
+"...kkkyykkyykkykkkkwkkkk",
+"..kykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkykkkkkkkkk",
+"kkyykkyykkyykkykkkKkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+".....kkkkkkkkk..........",
+".....k...k...k..........",
+"....k...k...k...........",
+"....k...k...k...........",
+"........................"],
 zangano:[
-"................",
-"...........k.k..",
-".....www....k...",
-"....wwwww.kkkkk.",
-"...wwwwwwwkkkkkk",
-"..kkkkkkkkkkwwkk",
-".kyykkyykykkwwkk",
-".kyykkyykykkkkkk",
-".kyykkyykykkkkkk",
-".kyykkyykykkkkk.",
-"..kkkkkkkk.kkk..",
-"...k.k..k.......",
-"..k...k..k......",
-"................",
-"................",
-"................"],
+"........................",
+".........ddddd..........",
+"......dddWWWWWd.....k...",
+".....dwdWWWWWWWd....k..k",
+"....dwwdWWWWWWWd....k..k",
+"...dwwwdWWWWWWWd....k.k.",
+"...dwwwwdWWWWWd....k..k.",
+"....dwwwwddddd....kkkk..",
+".....dkkkkkkk....kkkkk..",
+"....kkyykkyykkk.kkWWWWk.",
+"...kkkyykkyykkykkkWkkWkk",
+"..kykkyykkyykkykkkWkkWkk",
+".kyykkyykkyykkykkkWWWWkk",
+"kkyykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+".....kkkkkkkkk..........",
+".....k...k...k..........",
+"....k...k...k...........",
+"....k...k...k...........",
+"........................"],
 obrera:[
-"................",
-"...........k.k..",
-".....www....k...",
-"....wwwww..kkk..",
-"...wwwwwww.kkkk.",
-"..kkkkkkkkkkkkk.",
-".kyykyykyykkkwk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkk..",
-"..kkkkkkkk.kk...",
-"..YYk.k..kYY....",
-".YYYY.k..YYYY...",
-"..YY......YY....",
-"................",
-"................"],
+"........................",
+".........ddddd..........",
+"......dddWWWWWd.....k...",
+".....dwdWWWWWWWd....k..k",
+"....dwwdWWWWWWWd....k..k",
+"...dwwwdWWWWWWWd....k.k.",
+"...dwwwwdWWWWWd....k..k.",
+"....dwwwwddddd....kkkk..",
+".....dkkkkkkk....kkkkk..",
+"....kkyykkyykkk.kkkwwkk.",
+"...kkkyykkyykkykkkkwkkkk",
+"..kykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkykkkkkkkkk",
+"kkyykkyykkyykkykkkKkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+"....oookkkkooo..........",
+"...oYYYo.koYYYo.........",
+"...oYYYok.oYYYo.........",
+"...oYYYok.oYYYo.........",
+"....ooo....ooo.........."],
 miel:[
 "................",
 "....oooooooo....",
@@ -388,22 +443,30 @@ miel:[
 ".......yy.......",
 "........y......."],
 frasco:[
-"................",
-"....oooooooo....",
-"....oooooooo....",
-".....WWWWWW.....",
-"....WWWWWWWW....",
-"...WWwwWWWWWW...",
-"...WWwwWWWWWW...",
-"...WWwwWWWWWW...",
-"...WWwwWWWWWW...",
-"...WWWWWWWWWW...",
-"...WWWWWWWWWW...",
-"...WWWWWWWWWW...",
-"....WWWWWWWW....",
-".....dddddd.....",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"......KKKKKKKKKKKK......",
+"......KooooooooooK......",
+"......KooooooooooK......",
+"......KooooooooooK......",
+"......KKKKKKKKKKKK......",
+"......ssWWWWWWWWss......",
+"......sWwwWWWWWWWs......",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWyyyyyyyyyyWs.....",
+".....sWyyyyyyyyyyWs.....",
+".....sWyyyyyyyyyyWs.....",
+".....sWyyyyyyyyyyWs.....",
+"......syyyyyyyyyys......",
+"......syyyyyyyyyys......",
+"........ssssssss........",
+"........................"],
 flor:[
 "................",
 "......pppp......",
@@ -660,22 +723,30 @@ campo:[
 "GGGGmmGGGGGGGGGG",
 "GGGGGGGGGGGGGGGG"],
 ahumador:[
-".....dd.........",
-"....dddd..dd....",
-".....dd..dddd...",
-"......s...dd....",
-".....sss........",
-"....sssss.......",
-"...ssssssss.....",
-"...sSSSSSss.....",
-"...sSSSSSssnnn..",
-"...sSSSSSssnnnn.",
-"...sSSSSSss.nnn.",
-"...sSSSSSss..nn.",
-"...sSSSSSss.....",
-"...sSSSSSss.....",
-"...sssssss......",
-"................"],
+"...........ddddd........",
+"...........Sddd.........",
+"...ddd.....S............",
+"..ddddd...SdS...........",
+"..ddddd...SdS...........",
+"..ddddd..SdddS..........",
+"...ddd..SdddddS.........",
+"........SdddddS.........",
+"..d....SSSSSSSSS........",
+".ddd...SsddssssS........",
+"..d....SsddssssSKK......",
+".......SsddssssSKnKK....",
+".......SsddssssSKnKnKK..",
+".......SsddssssSKnKnKnKK",
+".......SsddssssSKnKnKnnK",
+".......SsddssssSKnKnKnnK",
+".......SsddssssSKKKnKnnK",
+".......SsddssssS..KKKnnK",
+".......SsddssssS....KKnK",
+".......SsddssssS......KK",
+".......SsddssssS........",
+".......SSSSSSSSS........",
+"........................",
+"........................"],
 apicultor:[
 "................",
 ".....cccccc.....",
@@ -694,243 +765,355 @@ apicultor:[
 "....www..www....",
 "....kkk..kkk...."],
 careta:[
-"................",
-".....cccccc.....",
-"....cccccccc....",
-"...cccccccccc...",
-"..cccccccccccc..",
-"....dWdWdWdW....",
-"....WdWdWdWd....",
-"....dWdWdWdW....",
-"....WdWdWdWd....",
-"....dWdWdWdW....",
-"....WdWdWdWd....",
-"....dWdWdWdW....",
-"....dddddddd....",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+".........qqqqqq.........",
+"........qccccccq........",
+".......qccccccccq.......",
+"......qccccccccccq......",
+"......qqqqqqqqqqqq......",
+"..qqqqcqqqqqqqqqqcqqqq..",
+".qccccccccccccccccccccq.",
+"..qqqqccccccccccccqqqq..",
+".....SqqqqqqqqqqqqS.....",
+".....SssssssssssssS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SssssssssssssS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SssssssssssssS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SssssssssssssS.....",
+".....SSSSSSSSSSSSSS.....",
+"........................"],
 guantes:[
-"................",
-"....oc.....oc...",
-"...occ....occ...",
-"..occc....occc..",
-"..occcc..occcc..",
-"...occc...occc..",
-"...occc...occc..",
-"...occc...occc..",
-"...occc...occc..",
-"...occc...occc..",
-"...oddd...oddd..",
-"...odwd...odwd..",
-"...odwd...odwd..",
-"...oddd...oddd..",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"...qqqqqq......qqqqqq...",
+"...qccccq......qccccq...",
+"...qccccq......qccccq...",
+"...qccccq......qccccq...",
+"...qccccq......qccccq...",
+"...qqqqqq......qqqqqq...",
+"...qccccqq.....qccccqq..",
+"..qcccccqcq...qcccccqcq.",
+"..qccccqcccq..qccccqcccq",
+"..qccccqcccq..qccccqcccq",
+"..qccccqcccq..qccccqcccq",
+"..qcccccqcq...qcccccqcq.",
+"..qccccccq....qccccccq..",
+"..qccccccq....qccccccq..",
+"..qqqqqqqq....qqqqqqqq..",
+"..qwwwwwwq....qwwwwwwq..",
+"..qwwwwwwq....qwwwwwwq..",
+"..qwwwwwwq....qwwwwwwq..",
+"..qwwwwwwq....qwwwwwwq..",
+"..qqqqqqqq....qqqqqqqq..",
+"........................"],
 pinza:[
-"................",
-"............ss..",
-"...........sss..",
-"..........sss...",
-".........sss....",
-"........sss.....",
-".......sss......",
-"......sss.......",
-".....sss........",
-"....sss.........",
-"...sss..........",
-"..rrr...........",
-".rrr............",
-".rr.............",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"..................s.s...",
+".................sssss..",
+"................sssssss.",
+"...............ssdssssss",
+"..............ssdss.sss.",
+".............ssdss...s..",
+"............ssdss.......",
+"...........ssdss........",
+"..........ssdss.........",
+".........ssdss..........",
+"........ssdss...........",
+".......ssdss............",
+"......ssdss.............",
+".....ssdss..............",
+"....ssdss...............",
+"...ssdss................",
+"..rssss.................",
+".rrrss..................",
+".rrrrr..................",
+"rrrrr...................",
+"..rrr..................."],
 cepillo:[
-"................",
-"................",
-"...........ccc..",
-"..........cccc..",
-"..nnnnnnnnqqccc.",
-"..nnnnnnnnqqcccc",
-"..nnnnnnnnqqccc.",
-"..........cccc..",
-"...........ccc..",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+".................ccccccc",
+".................eeeeeee",
+"...........KKKKKKccccccc",
+"...........Kqqqqqeeeeeee",
+".KKKKKKKKKKKqqqqqccccccc",
+"KnnnnnnnnnnKqqqqqeeeeeee",
+"KnnnnnnnnnnKqqqqqccccccc",
+"KnnnnnnnnnnKqqqqqeeeeeee",
+".KKKKKKKKKKKqqqqqccccccc",
+"...........Kqqqqqeeeeeee",
+"...........KKKKKKccccccc",
+".................eeeeeee",
+".................ccccccc",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................"],
 traje:[
-"................",
-".....dddddd.....",
-"...ddwwwwwwdd...",
-"..dwwwwkkwwwwd..",
-"..dwwwwkkwwwwd..",
-"..dwwddwwwddwd..",
-"..dwwd.wkkw.dd..",
-"..ddd..wwww.....",
-".......wkkw.....",
-".......wwww.....",
-".......wkkw.....",
-".......wwww.....",
-".......wwdww....",
-".......wwdww....",
-".......wwdww....",
-".......ddddd...."],
+"........................",
+"........................",
+".........dddddd.........",
+".........dwwwwd.........",
+".........dwwwwd.........",
+".......dddddddddd.......",
+"..ddddddwwwwswwwdddddd..",
+"..dwwwwdwwwwswwwdwwwwd..",
+"..dwwwwdwwwwswwwdwwwwd..",
+"..dwwwwdwwwwswwwdwwwwd..",
+"..dwwwwdwwwwswwwdwwwwd..",
+"..ddddddwwwwswwwdddddd..",
+".......dwwwwswwwd.......",
+".......dwwwwswwwd.......",
+".......dddddddddd.......",
+".......dddddddddd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dddddddddd......."],
 botas:[
-"................",
-"...rrr....rrr...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxxx...xxxx..",
-"...xxxxx..xxxxx.",
-"...kkkkk..kkkkk.",
-"................",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"..rrrrrr......rrrrrr....",
+"..rrrrrr......rrrrrr....",
+"..rrrrrr......rrrrrr....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kkkkkkkkkk..kkkkkkkkkk",
+"..kxxxxxxxxk..kxxxxxxxxk",
+"..kxxxxxxxxk..kxxxxxxxxk",
+"..kxxxxxxxxk..kxxxxxxxxk",
+"..kkkkkkkkkk..kkkkkkkkkk",
+"..kkkkkkkkkk..kkkkkkkkkk",
+"..kkkkkkkkkk..kkkkkkkkkk",
+"........................"],
 pelota:[
-"................",
-".....ddddd......",
-"....dwwkkkwd....",
-"...dwwkkkkkwd...",
-"..dwwwkkkkkwwd..",
-"..dwkwwkkkwwkd..",
-"..dwkkwwwwwkkd..",
-"..dwkkkwwwkkkd..",
-"..dwwkkwwwkkwd..",
-"...dwwkkkkkwd...",
-"....dwwkkkwd....",
-".....ddddd......",
-"................",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+".........SSSSSS.........",
+".......SSkkkkkwSS.......",
+"......SwwwkkkwwwwS......",
+".....SwwwwkkkwwwwwS.....",
+"....SwwwwwwwwwwwwwwS....",
+"...SwwwwwwwkwwwwwwwwS...",
+"...SwwkwwwkkkwwwwwwwS...",
+"..SwwkkwkkkkkkkwwkwwwS..",
+"..SkkkkkkkkkkkkwwkkkkS..",
+"..SkkkkkwkkkkkwwkkkkkS..",
+"..SwkkwwwkkkkkwwkkkkwS..",
+"..SwkwwwwkkkkkwwwwwkwS..",
+"..SwwwwwwwwwwwwwwwwwwS..",
+"...SwwwwwwwkwwkwwwwwS...",
+"...SwwwwkkkkwwkkkkwwS...",
+"....SwwwkkkkkkkkkkwS....",
+".....SwwwkkkkkkkkwS.....",
+"......SwwkwwwwwwkS......",
+".......SSwwwwwwSS.......",
+".........SSSSSS.........",
+"........................",
+"........................"],
 osito:[
-"................",
-"...nn....nn.....",
-"..nnnnnnnnnn....",
-"..nnnnnnnnnn....",
-"...nkknnnkkn....",
-"...nnnnnnnnn....",
-"....nnkknnn.....",
-".....nnnnn......",
-"...nnnnnnnnn....",
-"..nnnqqqqqnnn...",
-"..nnnqqqqqnnn...",
-"...nnqqqqqnn....",
-"....nnnnnnn.....",
-"....nnn.nnn.....",
-"................",
-"................"],
+"........................",
+"........................",
+".....KK..........KK.....",
+"....KnnK.KKKKKK.KnnK....",
+"...KnnnnKnnnnnnKnnnnK...",
+"...KnnnKnnnnnnnnKnnnK...",
+"....KnKnnnnnnnnnnKnK....",
+".....KnnknnnnnknnnK.....",
+".....KnnnnnnnnnnnnK.....",
+".....KnnnnqqqqnnnnK.....",
+".....KnnnqqkkqqnnnK.....",
+"......KnnqqqqqqnnK......",
+".......KnqqqqqqnK.......",
+"........KKKKKKKK........",
+".......KKnnnnnnKK.......",
+"......KnnnnnnnnnnK......",
+".....KnnnnqqqqnnnnK.....",
+"....KnnnnqqqqqqnnnnK....",
+"....KnnnqqqqqqqqnnnK....",
+"....KnnnqqqqqqqqnnnK....",
+".....KnnqqqqqqqqnnK.....",
+"......KnnqqqqqqnnK......",
+".......KKnqqqqnKK.......",
+".........KKKKKK........."],
 tele:[
-"................",
-"....x......x....",
-".....x....x.....",
-"..xxxxxxxxxxxx..",
-"..xbbbbbbbbbbx..",
-"..xbbbbwbbbbbx..",
-"..xbbbwwwbbbbx..",
-"..xbbbwwwwbbbx..",
-"..xbbbwwwbbbbx..",
-"..xbbbbwbbbbbx..",
-"..xbbbbbbbbbbx..",
-"..xxxxxxxxxxxx..",
-"....xx....xx....",
-"................",
-"................",
-"................"],
+"........................",
+".....S...........S......",
+"......S.........S.......",
+"......S.........S.......",
+".......S.......S........",
+".......S.......S........",
+"..kkkkkkkkkkkkkkkkkkkk..",
+".kxxxxxxxxxxxxxxxxxxxxk.",
+".kxbbbbbbbbbbbbbbbxxxxk.",
+".kxbbbbbbbbbbbbbbbxssxk.",
+".kxbbwwwwwbbbbbbbbxssxk.",
+".kxbbwwwwwbbbbbbbbxxxxk.",
+".kxbbwwwwwbbbbbbbbxxxxk.",
+".kxbbbbbbbbbbbbbbbxssxk.",
+".kxbbWWWWWWWWbbbbbxssxk.",
+".kxbbWWWWWWWWbbbbbxxxxk.",
+".kxbbbbbbbbbbbbbbbxxxxk.",
+".kxbbbbbbbbbbbbbbbxxxxk.",
+".kxxxxxxxxxxxxxxxxxxxxk.",
+"..kkkkkkkkkkkkkkkkkkkk..",
+"....kkk..........kkk....",
+"....kkk..........kkk....",
+"....kkk..........kkk....",
+"........................"],
 gato:[
-"................",
-"...s......s.....",
-"...ss....ss.....",
-"...ssssssss.....",
-"...swssssws.....",
-"...skssssks.....",
-"...ssssssss.....",
-"....sspsss......",
-".....ssss.......",
-"...ssssssss..s..",
-"..ssssssssss.s..",
-"..ssssssssssss..",
-"..ssssssssss....",
-"...ss..ss.......",
-"................",
-"................"],
+"........................",
+".....S............S.....",
+".....SS..........SS.....",
+".....SsS........SsS.....",
+".....SsS........SsS.....",
+"....SsssSSSSSSSSsssS....",
+"....SssSSssssssSSssS....",
+"....SsSssssssssssSsS....",
+"....SSssssssssssssSS....",
+"....SsssggssssggsssS....",
+"....SssskgsssskgsssS....",
+"....SssssssssssssssS....",
+"...SSSSSssspppssSSSSS...",
+".....SsssssspsssssS.S...",
+"......SssssssssssS..SSS.",
+".......SSSSSSSSSS....SS.",
+".......SSssssssSS.....SS",
+"......SssssssssssS....SS",
+".....SssssssssssssS...SS",
+".....SssssssssssssS...SS",
+".....SssssssssssssS...SS",
+"......SssssssssssS...SS.",
+".......SSssssssSS...SSS.",
+".........SSSSSS.....S..."],
 helado:[
-"................",
-".....pppp.......",
-"....pppppp......",
-"...pppppppp.....",
-"...pwpppppp.....",
-"...pppppppp.....",
-"....pppppp......",
-"...cccccccc.....",
-"...cqcqcqcc.....",
-"....cqcqcc......",
-"....ccqccc......",
-".....cqcc.......",
-".....ccc........",
-"......cc........",
-"......c.........",
-"................"],
+"...........r............",
+"...........r............",
+".........RRrRRR.........",
+"........RppppppR........",
+".......RpwppppppR.......",
+"......RpwwwppppppR......",
+".....RpppwppppppppR.....",
+".....RppppppppppppR.....",
+".....RppppppppppppR.....",
+".....RppppppppppppR.....",
+"......RppppppppppR......",
+"......KRppppppppRK......",
+".......KRppppppRK.......",
+".......KnRRRRRRnK.......",
+"........Knqnqnqn........",
+"........KnqnqnnK........",
+".........nqnqnnK........",
+".........Knnnqn.........",
+"..........nnnqn.........",
+"..........nnnnK.........",
+"...........nnn..........",
+"...........nnn..........",
+"............n...........",
+"............n..........."],
 videojuego:[
-"................",
-"................",
-"................",
-"...xxxxxxxxxx...",
-"..xxxxxxxxxxxx..",
-".xxxxxxxxxxxxxx.",
-".xxsxxxxxxxrxxx.",
-".xsssxxxxxrxrxx.",
-".xxsxxxxxxxrxxx.",
-".xxxxxxxxxxxxxx.",
-".xxxxxxxxxxxxxx.",
-"..xxxx....xxxx..",
-"................",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"....kkkkkkkkkkkkkkkk....",
+"..kkxxxxxxxxxxxxxxxxkk..",
+"..kxdddxxxxxxxxxrxxxxk..",
+".kxxdddxxxxxsxxrrrxxxxk.",
+".kdddddddxxsssxxrxxxYxk.",
+".kdddddddxxxsxxxxkkYYYk.",
+".kdddddddxxxxxxxgxxxYkk.",
+".kxxdddxkxxxxxxgggxxxxk.",
+".kxxdddxkxxxxxxkgxxxxxk.",
+".kxxxxxxkxxxxxxkxxxxxxk.",
+".kxxxxxxkkkkkkkkxxxxxxk.",
+".kxxxxxxk......kxxxxxxk.",
+".kxxxxxxk......kxxxxxxk.",
+"..kxxxxk........kxxxxk..",
+"...kkkk..........kkkk...",
+"........................",
+"........................"],
 perfume:[
-"................",
-".......vv.......",
-"......vvvv......",
-".......ss.......",
-".......ss.......",
-".....pppppp.....",
-"....pppppppp....",
-"...pppwppppppp..",
-"...pppwppppppp..",
-"...pppwppppppp..",
-"...pppppppppp...",
-"...pppppppppp...",
-"....pppppppp....",
-".....pppppp.....",
-"................",
-"................"],
+"........................",
+"...................dd...",
+"..........ssss....dddd..",
+"..........ssssssssdddd..",
+"..........ssss.....dd..W",
+".........KssssK.........",
+".........KvvvvK......W..",
+".........KvvvvK.........",
+".........KvvvvK.........",
+"........RKKKKKKR......W.",
+".......RppppppppR.......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RppppppppppR......",
+".......RppppppppR.......",
+"........RRRRRRRR........",
+"........................"],
 bici:[
-"................",
-"........r.......",
-"...rr..rr.......",
-"....r.rr.r......",
-"....rrr...r.....",
-"...r.r.....r....",
-"..sssrs...sssss.",
-".ss...ss.ss...ss",
-"s..r...ss..r...s",
-"s...r..s.r.....s",
-"s....rrrrr.....s",
-".ss...ss.ss...ss",
-"..sssss...sssss.",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"....................S...",
+".........kkkkk.SSSSSS...",
+".........kkkkk.Srr......",
+".........rrrrr..rr......",
+".........rr.rrrrr.......",
+"...SSSSSrr...rrrrSSSS...",
+"..SSSSSrrr...rrrrSSSSS..",
+".SSS..rrrS....rrr...SSS.",
+"SSS...rrSSS..Srrrr...SSS",
+"SS...rr..SS..Srrrrr...SS",
+"SS..rrrrrrrrrrrrrrrr..SS",
+"SS...rrrrrrrrrrr..r...SS",
+"SSS.....SSS..SSS.....SSS",
+".SSS...SSS....SSS...SSS.",
+"..SSSSSSS......SSSSSSS..",
+"...SSSSS........SSSSS...",
+"........................",
+"........................"],
 /* Abeja al rescate */
 varroa:[
 "................",
@@ -1056,26 +1239,26 @@ grano:[
 const svgCache={},cvCache={};
 function spriteSVG(name,attrs){
   if(svgCache[name])return svgCache[name].replace('<svg ','<svg '+(attrs||'')+' ');
-  const rows=S[name];if(!rows)return '';
+  const rows=S[name];if(!rows)return '';const n=rows.length;
   let out='';
-  rows.forEach((row,y)=>{let x=0;while(x<16){const ch=row[x];if(ch==='.'){x++;continue;}let x2=x;while(x2<16&&row[x2]===ch)x2++;out+=`<rect x="${x}" y="${y}" width="${x2-x}" height="1" fill="${PAL[ch]||'#f0f'}"/>`;x=x2;}});
-  const s=`<svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">${out}</svg>`;
+  rows.forEach((row,y)=>{let x=0;while(x<n){const ch=row[x];if(ch==='.'){x++;continue;}let x2=x;while(x2<n&&row[x2]===ch)x2++;out+=`<rect x="${x}" y="${y}" width="${x2-x}" height="1" fill="${PAL[ch]||'#f0f'}"/>`;x=x2;}});
+  const s=`<svg viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges" aria-hidden="true">${out}</svg>`;
   svgCache[name]=s;return s.replace('<svg ','<svg '+(attrs||'')+' ');
 }
 function spriteCanvas(name,scale){
   const key=name+'@'+scale;if(cvCache[key])return cvCache[key];
-  const rows=S[name];if(!rows)return null;
-  const c=document.createElement('canvas');c.width=16*scale;c.height=16*scale;const x=c.getContext('2d');
-  rows.forEach((row,y)=>{for(let i=0;i<16;i++){const ch=row[i];if(ch==='.')continue;x.fillStyle=PAL[ch]||'#f0f';x.fillRect(i*scale,y*scale,scale,scale);}});
+  const rows=S[name];if(!rows)return null;const n=rows.length;
+  const c=document.createElement('canvas');c.width=n*scale;c.height=n*scale;const x=c.getContext('2d');
+  rows.forEach((row,y)=>{for(let i=0;i<n;i++){const ch=row[i];if(ch==='.')continue;x.fillStyle=PAL[ch]||'#f0f';x.fillRect(i*scale,y*scale,scale,scale);}});
   cvCache[key]=c;return c;
 }
 // draw a sprite centered at (cx,cy) on ctx, with pixel scale, optional rotation (radians) and flip
 function draw(ctx,name,cx,cy,scale,rot,flip){
   const c=spriteCanvas(name,scale);if(!c)return;
   ctx.save();ctx.imageSmoothingEnabled=false;ctx.translate(Math.round(cx),Math.round(cy));if(rot)ctx.rotate(rot);if(flip)ctx.scale(-1,1);
-  ctx.drawImage(c,-8*scale,-8*scale);ctx.restore();
+  ctx.drawImage(c,-c.width/2,-c.height/2);ctx.restore();
 }
-return{PAL,S,svg:spriteSVG,canvas:spriteCanvas,draw,has:n=>!!S[n]};
+return{PAL,S,svg:spriteSVG,canvas:spriteCanvas,draw,has:n=>!!S[n],size:n=>S[n]?S[n].length:0};
 })();
 
 </script>
@@ -1178,14 +1361,33 @@ function pickVoice(){
 if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=()=>{voiceTries=0;pickVoice();};}else pickVoice();
 function stopVoice(){if(window.speechSynthesis)try{speechSynthesis.cancel();}catch(e){}if(playing){try{playing.pause();}catch(e){}playing=null;}}
 // say(['muy-bien','=LUCÍA']): claves de PHR, o texto literal con '='. Si todas las claves tienen grabación, se encadenan los audios; si no, se lee el texto.
+// say() devuelve una promesa que se cumple cuando termina de hablar (o enseguida si no hay voz)
+let lastSpeech=Promise.resolve();
 function say(keys,rate){
-  if(Snd.muted)return;if(typeof keys==='string')keys=[keys];
+  if(typeof keys==='string')keys=[keys];
   const parts=keys.map(k=>k.startsWith('=')?{text:k.slice(1)}:{key:k,text:PHR[k]||k,rec:REC[k]});
   stopVoice();
-  if(parts.every(p=>p.rec)){let i=0;const next=()=>{if(i>=parts.length){playing=null;return;}const a=new Audio(parts[i++].rec);playing=a;a.onended=next;a.onerror=next;a.play().catch(()=>{});};next();return;}
-  if(!window.speechSynthesis)return;
-  try{const u=new SpeechSynthesisUtterance(parts.map(p=>p.text).join(' '));u.lang=voice?voice.lang:'es-AR';if(voice)u.voice=voice;u.rate=rate||0.9;u.pitch=1.1;speechSynthesis.speak(u);}catch(e){}
+  if(Snd.muted){lastSpeech=Promise.resolve();return lastSpeech;}
+  const text=parts.map(p=>p.text).join(' ');
+  lastSpeech=new Promise(res=>{
+    let done=false;const fin=()=>{if(!done){done=true;res();}};
+    setTimeout(fin,1500+text.length*110); // por si el teléfono nunca avisa que terminó
+    if(parts.every(p=>p.rec)){let i=0;const next=()=>{if(i>=parts.length){playing=null;fin();return;}const a=new Audio(parts[i++].rec);playing=a;a.onended=next;a.onerror=next;a.play().catch(next);};next();return;}
+    if(!window.speechSynthesis){setTimeout(fin,Math.min(2500,300+text.length*45));return;}
+    try{const u=new SpeechSynthesisUtterance(text);u.lang=voice?voice.lang:'es-AR';if(voice)u.voice=voice;u.rate=rate||0.9;u.pitch=1.1;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u);}catch(e){fin();}
+  });
+  return lastSpeech;
 }
+// afterSpeech(fn, minMs): sigue cuando Mielina terminó de hablar (más una pausa corta), o antes si el chico toca la pantalla.
+let pendingAdvance=null,screenGen=0;
+function afterSpeech(fn,minMs){
+  const gen=screenGen,sp=lastSpeech;let done=false;
+  const go=()=>{if(done)return;done=true;if(pendingAdvance===go)pendingAdvance=null;if(gen!==screenGen)return;fn();};
+  pendingAdvance=go;
+  Promise.all([sp,new Promise(r=>setTimeout(r,minMs==null?500:minMs))]).then(()=>setTimeout(go,400));
+  setTimeout(go,15000);
+}
+document.addEventListener('pointerdown',e=>{if(pendingAdvance&&!e.target.closest('.topbar,#frame')){const g=pendingAdvance;stopVoice();g();}},true);
 function syncMute(){document.querySelectorAll('.mute').forEach(b=>{b.textContent=Snd.muted?'🔇':'🔊';b.setAttribute('aria-label',Snd.muted?'Activar sonido':'Silenciar');});}
 document.querySelectorAll('.mute').forEach(b=>b.addEventListener('click',()=>{Snd.toggle();syncMute();}));
 syncMute();
@@ -1202,9 +1404,26 @@ const GAMES=[
   {n:5,k:'g5',nm:'Camino a la flor',st:'Seguí el camino con el dedo',pic:'flor'},
   {n:6,k:'g6',nm:'Abeja al rescate',st:'Inclinás el celular y volás',pic:'abeja'}
 ];
+const VERSION='0.8';
 const S={name:'',letters:[],mode:'touch',done:{},cur:0};
+/* ---------- Configuración externa (config.json junto a index.html) y envío a la planilla de la Fundación ---------- */
+const CFG={endpoint:''};
+function deviceId(){try{let id=localStorage.getItem('colmena-dispositivo');if(!id){id=Math.random().toString(36).slice(2,10)+Date.now().toString(36);localStorage.setItem('colmena-dispositivo',id);}return id;}catch(e){return 'sin-id';}}
+function post(payload){
+  if(!CFG.endpoint)return Promise.reject(new Error('sin endpoint'));
+  const body=JSON.stringify(Object.assign({dispositivo:deviceId(),version:VERSION,fecha:new Date().toISOString()},payload));
+  return fetch(CFG.endpoint,{method:'POST',body,headers:{'Content-Type':'text/plain;charset=utf-8'},keepalive:true}).then(r=>r.ok?r.json().catch(()=>({ok:true})):Promise.reject(new Error('HTTP '+r.status)));
+}
+function ping(){
+  // una apertura por día y por teléfono, anónima
+  let last=null;try{last=localStorage.getItem('colmena-ping');}catch(e){}
+  const today=new Date().toISOString().slice(0,10);if(last===today)return;
+  const standalone=window.matchMedia('(display-mode: standalone)').matches||window.matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
+  post({tipo:'apertura',plataforma:/iPhone|iPad/.test(navigator.userAgent)?'iOS':/Android/.test(navigator.userAgent)?'Android':'otro',instalada:standalone?1:0}).then(()=>{try{localStorage.setItem('colmena-ping',today);}catch(e){}}).catch(()=>{});
+}
+if(/^https?:$/.test(location.protocol)){fetch('config.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(c=>{Object.assign(CFG,c||{});if(CFG.endpoint)ping();}).catch(()=>{});}
 let activeGame=null;
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('hidden',s.id!==id));if(activeGame&&activeGame.stop){activeGame.stop();activeGame=null;}window.scrollTo(0,0);}
+function show(id){screenGen++;pendingAdvance=null;document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('hidden',s.id!==id));if(activeGame&&activeGame.stop){activeGame.stop();activeGame=null;}window.scrollTo(0,0);}
 function loadProgress(){try{S.done=JSON.parse(localStorage.getItem('colmena-'+S.name)||'{}');}catch(e){S.done={};}}
 function saveProgress(){try{localStorage.setItem('colmena-'+S.name,JSON.stringify(S.done));}catch(e){}}
 function allDone(){return GAMES.every(g=>S.done[g.k]);}
@@ -1233,7 +1452,7 @@ $('goBtn').addEventListener('click',()=>{
 $('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('goBtn').click();});
 try{const last=localStorage.getItem('colmena-last');if(last)$('nameIn').value=last;}catch(e){}
 $('homeBtn').addEventListener('click',()=>{Stats.abandon();show('scrHome');});
-document.querySelectorAll('.back').forEach(b=>b.addEventListener('click',()=>{stopVoice();Stats.abandon();renderHive();show('scrHive');}));
+document.querySelectorAll('.back').forEach(b=>b.addEventListener('click',()=>{stopVoice();Stats.abandon();if(!S.name){show('scrHome');return;}renderHive();show('scrHive');}));
 $('doneHive').addEventListener('click',()=>{renderHive();show('scrHive');});
 $('doneAgain').addEventListener('click',()=>startGame(S.cur));
 $('diplomaBtn').addEventListener('click',showDiploma);
@@ -1243,9 +1462,9 @@ $('modeTilt').addEventListener('click',async()=>{Snd.resume();const ok=await Til
 function setMode(m){S.mode=m;$('modeTouch').classList.toggle('on',m==='touch');$('modeTilt').classList.toggle('on',m==='tilt');}
 function startGame(n){
   if(n===6){launchRescate();return;}
-  show('scrG'+n);if(n!==2)Stats.start(n);
-  activeGame=[null,G1,G2,G3,G4,G5][n].start();
+  show('scrG'+n);
   const s=$('scrG'+n).querySelector('[data-say]');if(s)say(s.dataset.say.split(' '));
+  afterSpeech(()=>{if(n!==2)Stats.start(n);activeGame=[null,G1,G2,G3,G4,G5][n].start();},300);
 }
 function showDiploma(){
   $('dipName').textContent=S.name;
@@ -1313,16 +1532,44 @@ $('libHome').addEventListener('click',()=>show('scrHome'));
 $('libCopy').addEventListener('click',()=>copyText(csv(),'Copiado el resumen de todos los nombres.'));
 $('libCsv').addEventListener('click',()=>{try{const blob=new Blob(['\ufeff'+csv()],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='colmena-de-juegos-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);$('libMsg').textContent='Planilla descargada (CSV, se abre con Excel o Google Sheets).';}catch(e){$('libMsg').textContent='No se pudo descargar; usá Copiar.';}});
 
+/* ---------- Panal de honor ---------- */
+function ranking(){
+  return Stats.names().map(n=>{
+    const st=Stats.load(n);let prog={};try{prog=JSON.parse(localStorage.getItem('colmena-'+n)||'{}');}catch(e){}
+    const P=st.partidas,ok=P.filter(p=>p.ok),rescate=P.filter(p=>p.g===6&&p.p!=null).map(p=>p.p);
+    return{nombre:n,celdas:GAMES.filter(g=>prog[g.k]).length,completas:ok.length,partidas:P.length,errores:P.reduce((a,p)=>a+p.e,0),rescate:rescate.length?Math.max(...rescate):0,ultima:P.length?P[P.length-1].f:null};
+  }).sort((a,b)=>b.celdas-a.celdas||b.completas-a.completas||b.rescate-a.rescate||a.errores-b.errores).slice(0,20);
+}
+function renderPanal(){
+  const rows=ranking();const el=$('panalList');
+  if(!rows.length){el.innerHTML='<p class="instr">Todavía no hay resultados en este teléfono.</p>';}
+  else el.innerHTML='<table><tr><th>#</th><th>Nombre</th><th class="n">Celdas</th><th class="n">Completas</th><th class="n">Rescate</th></tr>'+rows.map((r,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+r.nombre+'</b></td><td class="n">'+r.celdas+'/6</td><td class="n">'+r.completas+'</td><td class="n">'+r.rescate+'</td></tr>').join('')+'</table>';
+  const box=$('shareBox');box.classList.toggle('hidden',!CFG.endpoint||!rows.length);
+  let last=null;try{last=localStorage.getItem('colmena-subida');}catch(e){}
+  $('shareMsg').textContent=last?'Última subida: '+new Date(last).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+  $('shareOk').checked=false;$('shareBtn').disabled=true;
+}
+$('shareOk').addEventListener('change',e=>{$('shareBtn').disabled=!e.target.checked;});
+$('shareBtn').addEventListener('click',()=>{
+  const btn=$('shareBtn');btn.disabled=true;$('shareMsg').textContent='Subiendo…';
+  post({tipo:'ranking',filas:ranking()}).then(()=>{try{localStorage.setItem('colmena-subida',new Date().toISOString());}catch(e){}$('shareMsg').textContent='¡Listo! Los resultados llegaron a la Fundación. Gracias.';Snd.win();})
+  .catch(()=>{$('shareMsg').textContent='No se pudo subir (¿sin conexión?). Quedan guardados en el teléfono; probá más tarde.';btn.disabled=false;});
+});
+$('panalBtn').addEventListener('click',()=>{Snd.resume();renderPanal();show('scrPanal');say('=Estos son los veinte mejores de este teléfono.');});
+$('panalBtn2').addEventListener('click',()=>{Snd.resume();renderPanal();show('scrPanal');});
+
 /* ---------- Pantalla completa e instalación ---------- */
 (function(){
   const d=document.documentElement,btn=$('fsBtn');
   const req=d.requestFullscreen||d.webkitRequestFullscreen,exit=document.exitFullscreen||document.webkitExitFullscreen;
   const isFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
   const standalone=window.matchMedia('(display-mode: standalone)').matches||window.matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
-  if(!req||standalone)btn.hidden=true;
+  const enabled=document.fullscreenEnabled!==false&&document.webkitFullscreenEnabled!==false&&!!req;
+  if(standalone)btn.hidden=true;
+  if(!enabled&&!standalone){btn.textContent='↗';btn.setAttribute('aria-label','Abrir en una ventana propia para jugar a pantalla completa');}
   const ios=/iPhone|iPad|iPod/.test(navigator.userAgent);
   if(ios&&!standalone)$('iosHint').classList.remove('hidden');
-  btn.addEventListener('click',()=>{try{if(isFs())exit.call(document);else{const r=req.call(d,{navigationUI:'hide'});if(r&&r.catch)r.catch(()=>{});}}catch(e){}});
+  btn.addEventListener('click',()=>{if(!enabled){window.open(location.href,'_blank','noopener');return;}try{if(isFs())exit.call(document);else{const r=req.call(d,{navigationUI:'hide'});if(r&&r.catch)r.catch(()=>{});}}catch(e){}});
   const sync=()=>{btn.textContent=isFs()?'🡼':'⛶';btn.setAttribute('aria-label',isFs()?'Salir de pantalla completa':'Pantalla completa');};
   document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
   // instalable y sin conexión: el archivo sw.js se publica junto con index.html (no hace falta para jugar)
@@ -1360,7 +1607,7 @@ const Tilt=(function(){
 /* ---------- Lienzo ---------- */
 function fitCanvas(c){const dpr=Math.min(window.devicePixelRatio||1,2),r=c.getBoundingClientRect();c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);const ctx=c.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,W:r.width,H:r.height};}
 function drawBee(ctx,x,y,t,face){
-  if(window.PIX){PIX.draw(ctx,Math.floor(t*16)%2?'abeja2':'abeja',x,y,3,face==='up'?-Math.PI/2:0);return;}
+  if(window.PIX){PIX.draw(ctx,Math.floor(t*16)%2?'abeja2':'abeja',x,y,2,face==='up'?-Math.PI/2:0);return;}
   ctx.save();ctx.translate(x,y);if(face==='up')ctx.rotate(-Math.PI/2);
   const flap=Math.sin(t*40)*0.6;
   ctx.fillStyle='rgba(255,255,255,0.8)';
@@ -1409,7 +1656,7 @@ const G1=(function(){
   return{
     start(){c=$('g1Canvas');({ctx,W,H}=fitCanvas(c));items=[];idx=0;spawnT=0.4;sinceTarget=0;bee={x:W/2,y:H-50,vx:0};pointerX=null;wrongFlash=0;Tilt.recal();renderSlots();running=true;t0=lastT=performance.now();
       c.addEventListener('pointerdown',onDown);c.addEventListener('pointermove',onMove);c.addEventListener('pointerup',onUp);c.addEventListener('pointercancel',onUp);
-      setTimeout(setTarget,1200);raf=requestAnimationFrame(loop);return this;},
+      setTarget();raf=requestAnimationFrame(loop);return this;},
     stop(){running=false;cancelAnimationFrame(raf);if(c){c.removeEventListener('pointerdown',onDown);c.removeEventListener('pointermove',onMove);c.removeEventListener('pointerup',onUp);c.removeEventListener('pointercancel',onUp);}}
   };
 })();
@@ -1439,7 +1686,7 @@ const G2=(function(){
     $('g2Levels').classList.add('hidden');$('g2Card').classList.remove('hidden');$('g2Prog').classList.remove('hidden');
     const ik=l.tipo==='inicial'?'g2-instr-inicial':'g2-instr-silabas';
     $('g2Instr').textContent=PHR[ik].replace(/\.$/,'');$('g2Instr').dataset.say=ik;say(ik);
-    setTimeout(next,1800);
+    afterSpeech(next,300);
   }
   function next(){
     if(k>=rounds.length){S.done['g2-'+lv.n]=true;saveProgress();Stats.end(true);if(L2.every(l=>S.done['g2-'+l.n]))finishGame(2,'g2-fin');else{Snd.win();say(['muy-bien']);menu();}return;}
@@ -1459,7 +1706,7 @@ const G2=(function(){
     if(o===correct){busy=true;b.classList.add('ok');Snd.ok();
       if(lv.tipo==='inicial'){$('g2Word').innerHTML='<b>'+wd.w[0]+'</b>'+wd.w.slice(1);say(['si','w-'+cur,'empieza-con','letra-'+wd.w[0]]);}
       else{$('g2Word').innerHTML=wd.s.map(x=>'<b>'+x+'</b>').join('·');say(['si','w-'+cur,'tiene','silaba-'+correct]);}
-      k++;setTimeout(next,2000);}
+      k++;afterSpeech(next,600);}
     else{Stats.err();b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');Snd.bad();say(lv.tipo==='silabas'?['proba-otra','s-'+cur]:['proba-otra','w-'+cur],lv.tipo==='silabas'?0.75:0.9);}
   }
   return{start(){$('g2Hear').onclick=()=>{Snd.resume();if(cur&&!$('g2Card').classList.contains('hidden'))say(lv.tipo==='silabas'?['w-'+cur,'s-'+cur]:['w-'+cur],lv.tipo==='silabas'?0.75:0.9);};cur=null;menu();return this;}};
@@ -1482,13 +1729,13 @@ const G3=(function(){
     if(b.classList.contains('gone'))return;Snd.resume();
     count++;b.classList.add('gone');const r=$('g3Field').getBoundingClientRect(),br=b.getBoundingClientRect();b.style.transform='translate('+(r.right-br.left-60)+'px,'+(r.top-br.top+10)+'px) scale(.3)';
     $('g3Count').textContent=count;Snd.tap();say(['num-'+count],1);
-    if(count===n)setTimeout(ask,800);
+    if(count===n)afterSpeech(ask,500);
   }
   function ask(){
     $('g3Instr').textContent='¿Cuántas abejas fueron a la colmena?';say('cuantas-abejas');
     const opts=[n];while(opts.length<3){const v=n+ri(-2,2);if(v>=1&&v<=10&&!opts.includes(v))opts.push(v);}
     shuffle(opts);const el=$('g3Opts');el.innerHTML='';
-    opts.forEach(v=>{const b=document.createElement('button');b.className='opt';b.textContent=v;b.addEventListener('click',()=>{if(busy)return;if(v===n){busy=true;b.classList.add('ok');Snd.ok();say(['si','num-'+n,'abejas']);k++;setTimeout(next,1500);}else{Stats.err();b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');Snd.bad();say(['conta-de-nuevo','habia','num-'+n]);}});el.appendChild(b);});
+    opts.forEach(v=>{const b=document.createElement('button');b.className='opt';b.textContent=v;b.addEventListener('click',()=>{if(busy)return;if(v===n){busy=true;b.classList.add('ok');Snd.ok();say(['si','num-'+n,'abejas']);k++;afterSpeech(next,500);}else{Stats.err();b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');Snd.bad();say(['conta-de-nuevo','habia','num-'+n]);}});el.appendChild(b);});
   }
   return{start(){rounds=[ri(1,3),ri(2,5),ri(3,5),ri(4,5),ri(5,7),ri(6,8),ri(7,10),ri(8,10)];k=0;next();return this;}};
 })();
@@ -1515,7 +1762,7 @@ const G4=(function(){
       if(it.k==='perfume'){keys=['mmm','it-'+it.k,'queda-casa','perfume-no'];}
       else keys=['mmm','it-'+it.k,it.si?'va-mochila':'queda-casa',it.si?'lo-necesitas':'no-va-apiario'];
       txt='Mmm… '+name+' '+keys.slice(2).map(x=>PHR[x]).join(' ');}
-    $('g4Fb').textContent=txt.charAt(0).toUpperCase()+txt.slice(1);say(keys);k++;setTimeout(next,yes===it.si?1600:2800);
+    $('g4Fb').textContent=txt.charAt(0).toUpperCase()+txt.slice(1);say(keys);k++;afterSpeech(next,yes===it.si?500:900);
   }
   return{start(){list=shuffle(pickN(ITEMS.filter(i=>i.si),5).concat(pickN(ITEMS.filter(i=>!i.si),5)));k=0;$('g4Yes').onclick=()=>answer(true);$('g4No').onclick=()=>answer(false);next();return this;}};
 })();
@@ -1542,7 +1789,7 @@ const G5=(function(){
   function onDown(e){const p=pos(e);if(Math.hypot(p.x-pts[0].x,p.y-pts[0].y)<44){drawing=true;prog=0;trail=[pts[0]];Snd.tap();}else{say('empeza-abeja');}}
   function onMove(e){if(!drawing)return;const p=pos(e);const n=nearest(p.x,p.y,prog);if(n.d>34){fails++;Stats.err();reset(fails%2===0?'despacito':'uy');return;}prog=Math.max(prog,n.i);trail.push(p);if(prog>=pts.length-3&&Math.hypot(p.x-pts[pts.length-1].x,p.y-pts[pts.length-1].y)<40)done();}
   function onUp(){if(drawing&&prog<pts.length-3)reset('sin-levantar');}
-  function done(){drawing=false;prog=pts.length-1;Snd.pick();say('llegaste');k++;const nk=k;setTimeout(()=>{if(!running)return;if(nk>=paths.length){running=false;cancelAnimationFrame(raf);finishGame(5,'g5-fin');}else{setPath();say(['camino','num-'+(k+1),'camino-'+paths[k]]);}},1400);}
+  function done(){drawing=false;prog=pts.length-1;Snd.pick();say('llegaste');k++;const nk=k;afterSpeech(()=>{if(!running)return;if(nk>=paths.length){running=false;cancelAnimationFrame(raf);finishGame(5,'g5-fin');}else{setPath();say(['camino','num-'+(k+1),'camino-'+paths[k]]);}},600);}
   function loop(now){
     if(!running)return;const t=(now-t0)/1000;
     ctx.clearRect(0,0,W,H);
@@ -1562,7 +1809,7 @@ const G5=(function(){
   };
 })();
 
-$('emblem').innerHTML='<svg viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true"><path fill="#f5a800" d="M11 0h10v1h2v1h2v1h2v1h1v1h1v1h1v2h1v2h1v10h-1v2h-1v2h-1v1h-1v1h-1v1h-2v1h-2v1h-2v1H11v-1H9v-1H7v-1H5v-1H4v-1H3v-1H2v-2H1v-2H0V11h1V9h1V7h1V6h1V5h1V4h2V3h2V2h2V1h2z"/><path fill="#fff6dc" d="M12 3h8v1h2v1h2v1h1v1h1v1h1v2h1v2h1v8h-1v2h-1v2h-1v1h-1v1h-1v1h-2v1h-2v1h-8v-1h-2v-1H8v-1H7v-1H6v-1H5v-2H4v-2H3v-8h1V9h1V7h1V6h1V5h2V4h2z"/><g transform="translate(5 5) scale(1.375)">'+PIX.svg('abeja').replace(/<\/?svg[^>]*>/g,'')+'</g></svg>';
+$('emblem').innerHTML='<svg viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true"><path fill="#f5a800" d="M11 0h10v1h2v1h2v1h2v1h1v1h1v1h1v2h1v2h1v10h-1v2h-1v2h-1v1h-1v1h-1v1h-2v1h-2v1h-2v1H11v-1H9v-1H7v-1H5v-1H4v-1H3v-1H2v-2H1v-2H0V11h1V9h1V7h1V6h1V5h1V4h2V3h2V2h2V1h2z"/><path fill="#fff6dc" d="M12 3h8v1h2v1h2v1h1v1h1v1h1v2h1v2h1v8h-1v2h-1v2h-1v1h-1v1h-1v1h-2v1h-2v1h-8v-1h-2v-1H8v-1H7v-1H6v-1H5v-2H4v-2H3v-8h1V9h1V7h1V6h1V5h2V4h2z"/><g transform="translate(4 4)">'+PIX.svg('abeja').replace(/<\/?svg[^>]*>/g,'')+'</g></svg>';
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopVoice();});
 // Lista de frases para grabar (para el guion): window.COLMENA_FRASES
 window.COLMENA_FRASES=PHR;
@@ -1609,12 +1856,12 @@ p{margin:0;line-height:1.45}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat{background:var(--panel-2);border:3px solid var(--line);border-radius:0;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
 .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
-.stat strong{font-family:var(--font-pixel);font-weight:700;font-size:28px;line-height:1;font-variant-numeric:tabular-nums}
+.stat strong{font-family:var(--font-display);font-weight:800;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
 .foot{font-size:12px;color:var(--muted);text-align:center}
 .foot a{color:var(--honey-deep);font-weight:700;font-size:15px;text-decoration:none}
 .foot a:focus-visible{outline:3px solid var(--fg)}
 #hud{position:fixed;left:0;right:0;top:0;padding:calc(8px + env(safe-area-inset-top,0px)) 12px 8px;display:flex;align-items:center;gap:10px;pointer-events:none;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.5);z-index:3}
-#hud .sc{font-family:var(--font-pixel);font-weight:700;font-size:26px;font-variant-numeric:tabular-nums;line-height:1}
+#hud .sc{font-family:var(--font-display);font-weight:800;font-size:28px;font-variant-numeric:tabular-nums;line-height:1}
 #hud .lv{font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
 #lives{display:flex;gap:4px}
 #lives i{width:14px;height:16px;background:var(--honey);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);display:block;image-rendering:pixelated}
@@ -1631,8 +1878,8 @@ p{margin:0;line-height:1.45}
 </style>
 
 <script>
-/* Banco de sprites de Colmena de Juegos · pixel art 16×16.
-   Cada sprite es una lista de 16 cadenas de 16 caracteres; cada carácter es un color de PAL ('.' = transparente).
+/* Banco de sprites de Colmena de Juegos · pixel art (16×16 y 24×24).
+   Cada sprite es una lista de N cadenas de N caracteres; cada carácter es un color de PAL ('.' = transparente).
    Se comparte entre la app y Abeja al rescate (build.py lo inserta en los dos). */
 window.PIX=(function(){
 const PAL={
@@ -1643,90 +1890,130 @@ const PAL={
 };
 const S={
 abeja:[
-"................",
-"...........k.k..",
-".....www....k...",
-"....wwwww..kkk..",
-"...wwwwwww.kkkk.",
-"..kkkkkkkkkkkkk.",
-".kyykyykyykkkwk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkk..",
-"..kkkkkkkk.kk...",
-"...k.k..k.......",
-"..k...k..k......",
-"................",
-"................",
-"................"],
+"........................",
+".........ddddd..........",
+"......dddWWWWWd.....k...",
+".....dwdWWWWWWWd....k..k",
+"....dwwdWWWWWWWd....k..k",
+"...dwwwdWWWWWWWd....k.k.",
+"...dwwwwdWWWWWd....k..k.",
+"....dwwwwddddd....kkkk..",
+".....dkkkkkkk....kkkkk..",
+"....kkyykkyykkk.kkkwwkk.",
+"...kkkyykkyykkykkkkwkkkk",
+"..kykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkykkkkkkkkk",
+"kkyykkyykkyykkykkkKkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+".....kkkkkkkkk..........",
+".....k...k...k..........",
+"....k...k...k...........",
+"....k...k...k...........",
+"........................"],
 abeja2:[
-"................",
-"...........k.k..",
-"............k...",
-"...........kkk..",
-"..kkkkkkkkkkkkk.",
-".kwwwwwwwwkkkkk.",
-".kwwwwwwwwkkkwk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkk..",
-"..kkkkkkkk.kk...",
-"...k.k..k.......",
-"..k...k..k......",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"....................k...",
+"....................k..k",
+"........dddddd......k..k",
+".....dddWWWWWWd.....k.k.",
+"...ddwdWWWWWWWWd...k..k.",
+"..dwwwdWWWWWWWWd..kkkk..",
+"..dwwwkkkkkkkWd..kkkkk..",
+"...dkkyykkyykkk.kkkwwkk.",
+"...kkkyykkyykkykkkkwkkkk",
+"..kykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkykkkkkkkkk",
+"kkyykkyykkyykkykkkKkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+".....kkkkkkkkk..........",
+".....k...k...k..........",
+"....k...k...k...........",
+"....k...k...k...........",
+"........................"],
 reina:[
-"...........Y.Y..",
-"...........YYY..",
-".....www...YYY..",
-"....wwwww..kkk..",
-"...wwwwwww.kkkk.",
-"..kkkkkkkkkkkkk.",
-".kyykyykyykkkwk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkk..",
-"..kkkkkkkk.kk...",
-"...k.k..k.......",
-"..k...k..k......",
-"................",
-"................",
-"................"],
+"...................o....",
+".........ddddd.o...oo..o",
+"......dddWWWWWdoo.oYo.oo",
+".....dwdWWWWWWWoo.oYYooo",
+"....dwwdWWWWWWWoYoYYYoYo",
+"...dwwwdWWWWWWWoYYYYYYYo",
+"...dwwwwdWWWWWdooooooooo",
+"....dwwwwddddd....kkkk..",
+".....dkkkkkkk....kkkkk..",
+"....kkyykkyykkk.kkkwwkk.",
+"...kkkyykkyykkykkkkwkkkk",
+"..kykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkykkkkkkkkk",
+"kkyykkyykkyykkykkkKkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+".....kkkkkkkkk..........",
+".....k...k...k..........",
+"....k...k...k...........",
+"....k...k...k...........",
+"........................"],
 zangano:[
-"................",
-"...........k.k..",
-".....www....k...",
-"....wwwww.kkkkk.",
-"...wwwwwwwkkkkkk",
-"..kkkkkkkkkkwwkk",
-".kyykkyykykkwwkk",
-".kyykkyykykkkkkk",
-".kyykkyykykkkkkk",
-".kyykkyykykkkkk.",
-"..kkkkkkkk.kkk..",
-"...k.k..k.......",
-"..k...k..k......",
-"................",
-"................",
-"................"],
+"........................",
+".........ddddd..........",
+"......dddWWWWWd.....k...",
+".....dwdWWWWWWWd....k..k",
+"....dwwdWWWWWWWd....k..k",
+"...dwwwdWWWWWWWd....k.k.",
+"...dwwwwdWWWWWd....k..k.",
+"....dwwwwddddd....kkkk..",
+".....dkkkkkkk....kkkkk..",
+"....kkyykkyykkk.kkWWWWk.",
+"...kkkyykkyykkykkkWkkWkk",
+"..kykkyykkyykkykkkWkkWkk",
+".kyykkyykkyykkykkkWWWWkk",
+"kkyykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+".....kkkkkkkkk..........",
+".....k...k...k..........",
+"....k...k...k...........",
+"....k...k...k...........",
+"........................"],
 obrera:[
-"................",
-"...........k.k..",
-".....www....k...",
-"....wwwww..kkk..",
-"...wwwwwww.kkkk.",
-"..kkkkkkkkkkkkk.",
-".kyykyykyykkkwk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkkk.",
-".kyykyykyykkkk..",
-"..kkkkkkkk.kk...",
-"..YYk.k..kYY....",
-".YYYY.k..YYYY...",
-"..YY......YY....",
-"................",
-"................"],
+"........................",
+".........ddddd..........",
+"......dddWWWWWd.....k...",
+".....dwdWWWWWWWd....k..k",
+"....dwwdWWWWWWWd....k..k",
+"...dwwwdWWWWWWWd....k.k.",
+"...dwwwwdWWWWWd....k..k.",
+"....dwwwwddddd....kkkk..",
+".....dkkkkkkk....kkkkk..",
+"....kkyykkyykkk.kkkwwkk.",
+"...kkkyykkyykkykkkkwkkkk",
+"..kykkyykkyykkykkkkkkkkk",
+".kyykkyykkyykkykkkkkkkkk",
+"kkyykkyykkyykkykkkKkkkkk",
+".kyykkyykkyykkyykkkkkkk.",
+".kyykkyykkyykkyyykkkkk..",
+"..kykkyykkyykkyyk.kkk...",
+"...oooyykkyykkyk........",
+"....kkoookyykkk.........",
+"....oookkkkooo..........",
+"...oYYYo.koYYYo.........",
+"...oYYYok.oYYYo.........",
+"...oYYYok.oYYYo.........",
+"....ooo....ooo.........."],
 miel:[
 "................",
 "....oooooooo....",
@@ -1745,22 +2032,30 @@ miel:[
 ".......yy.......",
 "........y......."],
 frasco:[
-"................",
-"....oooooooo....",
-"....oooooooo....",
-".....WWWWWW.....",
-"....WWWWWWWW....",
-"...WWwwWWWWWW...",
-"...WWwwWWWWWW...",
-"...WWwwWWWWWW...",
-"...WWwwWWWWWW...",
-"...WWWWWWWWWW...",
-"...WWWWWWWWWW...",
-"...WWWWWWWWWW...",
-"....WWWWWWWW....",
-".....dddddd.....",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"......KKKKKKKKKKKK......",
+"......KooooooooooK......",
+"......KooooooooooK......",
+"......KooooooooooK......",
+"......KKKKKKKKKKKK......",
+"......ssWWWWWWWWss......",
+"......sWwwWWWWWWWs......",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWWwwWWWWWWWWs.....",
+".....sWyyyyyyyyyyWs.....",
+".....sWyyyyyyyyyyWs.....",
+".....sWyyyyyyyyyyWs.....",
+".....sWyyyyyyyyyyWs.....",
+"......syyyyyyyyyys......",
+"......syyyyyyyyyys......",
+"........ssssssss........",
+"........................"],
 flor:[
 "................",
 "......pppp......",
@@ -2017,22 +2312,30 @@ campo:[
 "GGGGmmGGGGGGGGGG",
 "GGGGGGGGGGGGGGGG"],
 ahumador:[
-".....dd.........",
-"....dddd..dd....",
-".....dd..dddd...",
-"......s...dd....",
-".....sss........",
-"....sssss.......",
-"...ssssssss.....",
-"...sSSSSSss.....",
-"...sSSSSSssnnn..",
-"...sSSSSSssnnnn.",
-"...sSSSSSss.nnn.",
-"...sSSSSSss..nn.",
-"...sSSSSSss.....",
-"...sSSSSSss.....",
-"...sssssss......",
-"................"],
+"...........ddddd........",
+"...........Sddd.........",
+"...ddd.....S............",
+"..ddddd...SdS...........",
+"..ddddd...SdS...........",
+"..ddddd..SdddS..........",
+"...ddd..SdddddS.........",
+"........SdddddS.........",
+"..d....SSSSSSSSS........",
+".ddd...SsddssssS........",
+"..d....SsddssssSKK......",
+".......SsddssssSKnKK....",
+".......SsddssssSKnKnKK..",
+".......SsddssssSKnKnKnKK",
+".......SsddssssSKnKnKnnK",
+".......SsddssssSKnKnKnnK",
+".......SsddssssSKKKnKnnK",
+".......SsddssssS..KKKnnK",
+".......SsddssssS....KKnK",
+".......SsddssssS......KK",
+".......SsddssssS........",
+".......SSSSSSSSS........",
+"........................",
+"........................"],
 apicultor:[
 "................",
 ".....cccccc.....",
@@ -2051,243 +2354,355 @@ apicultor:[
 "....www..www....",
 "....kkk..kkk...."],
 careta:[
-"................",
-".....cccccc.....",
-"....cccccccc....",
-"...cccccccccc...",
-"..cccccccccccc..",
-"....dWdWdWdW....",
-"....WdWdWdWd....",
-"....dWdWdWdW....",
-"....WdWdWdWd....",
-"....dWdWdWdW....",
-"....WdWdWdWd....",
-"....dWdWdWdW....",
-"....dddddddd....",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+".........qqqqqq.........",
+"........qccccccq........",
+".......qccccccccq.......",
+"......qccccccccccq......",
+"......qqqqqqqqqqqq......",
+"..qqqqcqqqqqqqqqqcqqqq..",
+".qccccccccccccccccccccq.",
+"..qqqqccccccccccccqqqq..",
+".....SqqqqqqqqqqqqS.....",
+".....SssssssssssssS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SssssssssssssS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SssssssssssssS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SWsWWsWWsWWsWS.....",
+".....SssssssssssssS.....",
+".....SSSSSSSSSSSSSS.....",
+"........................"],
 guantes:[
-"................",
-"....oc.....oc...",
-"...occ....occ...",
-"..occc....occc..",
-"..occcc..occcc..",
-"...occc...occc..",
-"...occc...occc..",
-"...occc...occc..",
-"...occc...occc..",
-"...occc...occc..",
-"...oddd...oddd..",
-"...odwd...odwd..",
-"...odwd...odwd..",
-"...oddd...oddd..",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"...qqqqqq......qqqqqq...",
+"...qccccq......qccccq...",
+"...qccccq......qccccq...",
+"...qccccq......qccccq...",
+"...qccccq......qccccq...",
+"...qqqqqq......qqqqqq...",
+"...qccccqq.....qccccqq..",
+"..qcccccqcq...qcccccqcq.",
+"..qccccqcccq..qccccqcccq",
+"..qccccqcccq..qccccqcccq",
+"..qccccqcccq..qccccqcccq",
+"..qcccccqcq...qcccccqcq.",
+"..qccccccq....qccccccq..",
+"..qccccccq....qccccccq..",
+"..qqqqqqqq....qqqqqqqq..",
+"..qwwwwwwq....qwwwwwwq..",
+"..qwwwwwwq....qwwwwwwq..",
+"..qwwwwwwq....qwwwwwwq..",
+"..qwwwwwwq....qwwwwwwq..",
+"..qqqqqqqq....qqqqqqqq..",
+"........................"],
 pinza:[
-"................",
-"............ss..",
-"...........sss..",
-"..........sss...",
-".........sss....",
-"........sss.....",
-".......sss......",
-"......sss.......",
-".....sss........",
-"....sss.........",
-"...sss..........",
-"..rrr...........",
-".rrr............",
-".rr.............",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"..................s.s...",
+".................sssss..",
+"................sssssss.",
+"...............ssdssssss",
+"..............ssdss.sss.",
+".............ssdss...s..",
+"............ssdss.......",
+"...........ssdss........",
+"..........ssdss.........",
+".........ssdss..........",
+"........ssdss...........",
+".......ssdss............",
+"......ssdss.............",
+".....ssdss..............",
+"....ssdss...............",
+"...ssdss................",
+"..rssss.................",
+".rrrss..................",
+".rrrrr..................",
+"rrrrr...................",
+"..rrr..................."],
 cepillo:[
-"................",
-"................",
-"...........ccc..",
-"..........cccc..",
-"..nnnnnnnnqqccc.",
-"..nnnnnnnnqqcccc",
-"..nnnnnnnnqqccc.",
-"..........cccc..",
-"...........ccc..",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+".................ccccccc",
+".................eeeeeee",
+"...........KKKKKKccccccc",
+"...........Kqqqqqeeeeeee",
+".KKKKKKKKKKKqqqqqccccccc",
+"KnnnnnnnnnnKqqqqqeeeeeee",
+"KnnnnnnnnnnKqqqqqccccccc",
+"KnnnnnnnnnnKqqqqqeeeeeee",
+".KKKKKKKKKKKqqqqqccccccc",
+"...........Kqqqqqeeeeeee",
+"...........KKKKKKccccccc",
+".................eeeeeee",
+".................ccccccc",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................"],
 traje:[
-"................",
-".....dddddd.....",
-"...ddwwwwwwdd...",
-"..dwwwwkkwwwwd..",
-"..dwwwwkkwwwwd..",
-"..dwwddwwwddwd..",
-"..dwwd.wkkw.dd..",
-"..ddd..wwww.....",
-".......wkkw.....",
-".......wwww.....",
-".......wkkw.....",
-".......wwww.....",
-".......wwdww....",
-".......wwdww....",
-".......wwdww....",
-".......ddddd...."],
+"........................",
+"........................",
+".........dddddd.........",
+".........dwwwwd.........",
+".........dwwwwd.........",
+".......dddddddddd.......",
+"..ddddddwwwwswwwdddddd..",
+"..dwwwwdwwwwswwwdwwwwd..",
+"..dwwwwdwwwwswwwdwwwwd..",
+"..dwwwwdwwwwswwwdwwwwd..",
+"..dwwwwdwwwwswwwdwwwwd..",
+"..ddddddwwwwswwwdddddd..",
+".......dwwwwswwwd.......",
+".......dwwwwswwwd.......",
+".......dddddddddd.......",
+".......dddddddddd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dwwwddwwwd.......",
+".......dddddddddd......."],
 botas:[
-"................",
-"...rrr....rrr...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxx....xxx...",
-"...xxxx...xxxx..",
-"...xxxxx..xxxxx.",
-"...kkkkk..kkkkk.",
-"................",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"..rrrrrr......rrrrrr....",
+"..rrrrrr......rrrrrr....",
+"..rrrrrr......rrrrrr....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kSxxxk......kSxxxk....",
+"..kkkkkkkkkk..kkkkkkkkkk",
+"..kxxxxxxxxk..kxxxxxxxxk",
+"..kxxxxxxxxk..kxxxxxxxxk",
+"..kxxxxxxxxk..kxxxxxxxxk",
+"..kkkkkkkkkk..kkkkkkkkkk",
+"..kkkkkkkkkk..kkkkkkkkkk",
+"..kkkkkkkkkk..kkkkkkkkkk",
+"........................"],
 pelota:[
-"................",
-".....ddddd......",
-"....dwwkkkwd....",
-"...dwwkkkkkwd...",
-"..dwwwkkkkkwwd..",
-"..dwkwwkkkwwkd..",
-"..dwkkwwwwwkkd..",
-"..dwkkkwwwkkkd..",
-"..dwwkkwwwkkwd..",
-"...dwwkkkkkwd...",
-"....dwwkkkwd....",
-".....ddddd......",
-"................",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+".........SSSSSS.........",
+".......SSkkkkkwSS.......",
+"......SwwwkkkwwwwS......",
+".....SwwwwkkkwwwwwS.....",
+"....SwwwwwwwwwwwwwwS....",
+"...SwwwwwwwkwwwwwwwwS...",
+"...SwwkwwwkkkwwwwwwwS...",
+"..SwwkkwkkkkkkkwwkwwwS..",
+"..SkkkkkkkkkkkkwwkkkkS..",
+"..SkkkkkwkkkkkwwkkkkkS..",
+"..SwkkwwwkkkkkwwkkkkwS..",
+"..SwkwwwwkkkkkwwwwwkwS..",
+"..SwwwwwwwwwwwwwwwwwwS..",
+"...SwwwwwwwkwwkwwwwwS...",
+"...SwwwwkkkkwwkkkkwwS...",
+"....SwwwkkkkkkkkkkwS....",
+".....SwwwkkkkkkkkwS.....",
+"......SwwkwwwwwwkS......",
+".......SSwwwwwwSS.......",
+".........SSSSSS.........",
+"........................",
+"........................"],
 osito:[
-"................",
-"...nn....nn.....",
-"..nnnnnnnnnn....",
-"..nnnnnnnnnn....",
-"...nkknnnkkn....",
-"...nnnnnnnnn....",
-"....nnkknnn.....",
-".....nnnnn......",
-"...nnnnnnnnn....",
-"..nnnqqqqqnnn...",
-"..nnnqqqqqnnn...",
-"...nnqqqqqnn....",
-"....nnnnnnn.....",
-"....nnn.nnn.....",
-"................",
-"................"],
+"........................",
+"........................",
+".....KK..........KK.....",
+"....KnnK.KKKKKK.KnnK....",
+"...KnnnnKnnnnnnKnnnnK...",
+"...KnnnKnnnnnnnnKnnnK...",
+"....KnKnnnnnnnnnnKnK....",
+".....KnnknnnnnknnnK.....",
+".....KnnnnnnnnnnnnK.....",
+".....KnnnnqqqqnnnnK.....",
+".....KnnnqqkkqqnnnK.....",
+"......KnnqqqqqqnnK......",
+".......KnqqqqqqnK.......",
+"........KKKKKKKK........",
+".......KKnnnnnnKK.......",
+"......KnnnnnnnnnnK......",
+".....KnnnnqqqqnnnnK.....",
+"....KnnnnqqqqqqnnnnK....",
+"....KnnnqqqqqqqqnnnK....",
+"....KnnnqqqqqqqqnnnK....",
+".....KnnqqqqqqqqnnK.....",
+"......KnnqqqqqqnnK......",
+".......KKnqqqqnKK.......",
+".........KKKKKK........."],
 tele:[
-"................",
-"....x......x....",
-".....x....x.....",
-"..xxxxxxxxxxxx..",
-"..xbbbbbbbbbbx..",
-"..xbbbbwbbbbbx..",
-"..xbbbwwwbbbbx..",
-"..xbbbwwwwbbbx..",
-"..xbbbwwwbbbbx..",
-"..xbbbbwbbbbbx..",
-"..xbbbbbbbbbbx..",
-"..xxxxxxxxxxxx..",
-"....xx....xx....",
-"................",
-"................",
-"................"],
+"........................",
+".....S...........S......",
+"......S.........S.......",
+"......S.........S.......",
+".......S.......S........",
+".......S.......S........",
+"..kkkkkkkkkkkkkkkkkkkk..",
+".kxxxxxxxxxxxxxxxxxxxxk.",
+".kxbbbbbbbbbbbbbbbxxxxk.",
+".kxbbbbbbbbbbbbbbbxssxk.",
+".kxbbwwwwwbbbbbbbbxssxk.",
+".kxbbwwwwwbbbbbbbbxxxxk.",
+".kxbbwwwwwbbbbbbbbxxxxk.",
+".kxbbbbbbbbbbbbbbbxssxk.",
+".kxbbWWWWWWWWbbbbbxssxk.",
+".kxbbWWWWWWWWbbbbbxxxxk.",
+".kxbbbbbbbbbbbbbbbxxxxk.",
+".kxbbbbbbbbbbbbbbbxxxxk.",
+".kxxxxxxxxxxxxxxxxxxxxk.",
+"..kkkkkkkkkkkkkkkkkkkk..",
+"....kkk..........kkk....",
+"....kkk..........kkk....",
+"....kkk..........kkk....",
+"........................"],
 gato:[
-"................",
-"...s......s.....",
-"...ss....ss.....",
-"...ssssssss.....",
-"...swssssws.....",
-"...skssssks.....",
-"...ssssssss.....",
-"....sspsss......",
-".....ssss.......",
-"...ssssssss..s..",
-"..ssssssssss.s..",
-"..ssssssssssss..",
-"..ssssssssss....",
-"...ss..ss.......",
-"................",
-"................"],
+"........................",
+".....S............S.....",
+".....SS..........SS.....",
+".....SsS........SsS.....",
+".....SsS........SsS.....",
+"....SsssSSSSSSSSsssS....",
+"....SssSSssssssSSssS....",
+"....SsSssssssssssSsS....",
+"....SSssssssssssssSS....",
+"....SsssggssssggsssS....",
+"....SssskgsssskgsssS....",
+"....SssssssssssssssS....",
+"...SSSSSssspppssSSSSS...",
+".....SsssssspsssssS.S...",
+"......SssssssssssS..SSS.",
+".......SSSSSSSSSS....SS.",
+".......SSssssssSS.....SS",
+"......SssssssssssS....SS",
+".....SssssssssssssS...SS",
+".....SssssssssssssS...SS",
+".....SssssssssssssS...SS",
+"......SssssssssssS...SS.",
+".......SSssssssSS...SSS.",
+".........SSSSSS.....S..."],
 helado:[
-"................",
-".....pppp.......",
-"....pppppp......",
-"...pppppppp.....",
-"...pwpppppp.....",
-"...pppppppp.....",
-"....pppppp......",
-"...cccccccc.....",
-"...cqcqcqcc.....",
-"....cqcqcc......",
-"....ccqccc......",
-".....cqcc.......",
-".....ccc........",
-"......cc........",
-"......c.........",
-"................"],
+"...........r............",
+"...........r............",
+".........RRrRRR.........",
+"........RppppppR........",
+".......RpwppppppR.......",
+"......RpwwwppppppR......",
+".....RpppwppppppppR.....",
+".....RppppppppppppR.....",
+".....RppppppppppppR.....",
+".....RppppppppppppR.....",
+"......RppppppppppR......",
+"......KRppppppppRK......",
+".......KRppppppRK.......",
+".......KnRRRRRRnK.......",
+"........Knqnqnqn........",
+"........KnqnqnnK........",
+".........nqnqnnK........",
+".........Knnnqn.........",
+"..........nnnqn.........",
+"..........nnnnK.........",
+"...........nnn..........",
+"...........nnn..........",
+"............n...........",
+"............n..........."],
 videojuego:[
-"................",
-"................",
-"................",
-"...xxxxxxxxxx...",
-"..xxxxxxxxxxxx..",
-".xxxxxxxxxxxxxx.",
-".xxsxxxxxxxrxxx.",
-".xsssxxxxxrxrxx.",
-".xxsxxxxxxxrxxx.",
-".xxxxxxxxxxxxxx.",
-".xxxxxxxxxxxxxx.",
-"..xxxx....xxxx..",
-"................",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"....kkkkkkkkkkkkkkkk....",
+"..kkxxxxxxxxxxxxxxxxkk..",
+"..kxdddxxxxxxxxxrxxxxk..",
+".kxxdddxxxxxsxxrrrxxxxk.",
+".kdddddddxxsssxxrxxxYxk.",
+".kdddddddxxxsxxxxkkYYYk.",
+".kdddddddxxxxxxxgxxxYkk.",
+".kxxdddxkxxxxxxgggxxxxk.",
+".kxxdddxkxxxxxxkgxxxxxk.",
+".kxxxxxxkxxxxxxkxxxxxxk.",
+".kxxxxxxkkkkkkkkxxxxxxk.",
+".kxxxxxxk......kxxxxxxk.",
+".kxxxxxxk......kxxxxxxk.",
+"..kxxxxk........kxxxxk..",
+"...kkkk..........kkkk...",
+"........................",
+"........................"],
 perfume:[
-"................",
-".......vv.......",
-"......vvvv......",
-".......ss.......",
-".......ss.......",
-".....pppppp.....",
-"....pppppppp....",
-"...pppwppppppp..",
-"...pppwppppppp..",
-"...pppwppppppp..",
-"...pppppppppp...",
-"...pppppppppp...",
-"....pppppppp....",
-".....pppppp.....",
-"................",
-"................"],
+"........................",
+"...................dd...",
+"..........ssss....dddd..",
+"..........ssssssssdddd..",
+"..........ssss.....dd..W",
+".........KssssK.........",
+".........KvvvvK......W..",
+".........KvvvvK.........",
+".........KvvvvK.........",
+"........RKKKKKKR......W.",
+".......RppppppppR.......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RpwwpppppppR......",
+"......RppppppppppR......",
+".......RppppppppR.......",
+"........RRRRRRRR........",
+"........................"],
 bici:[
-"................",
-"........r.......",
-"...rr..rr.......",
-"....r.rr.r......",
-"....rrr...r.....",
-"...r.r.....r....",
-"..sssrs...sssss.",
-".ss...ss.ss...ss",
-"s..r...ss..r...s",
-"s...r..s.r.....s",
-"s....rrrrr.....s",
-".ss...ss.ss...ss",
-"..sssss...sssss.",
-"................",
-"................",
-"................"],
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"....................S...",
+".........kkkkk.SSSSSS...",
+".........kkkkk.Srr......",
+".........rrrrr..rr......",
+".........rr.rrrrr.......",
+"...SSSSSrr...rrrrSSSS...",
+"..SSSSSrrr...rrrrSSSSS..",
+".SSS..rrrS....rrr...SSS.",
+"SSS...rrSSS..Srrrr...SSS",
+"SS...rr..SS..Srrrrr...SS",
+"SS..rrrrrrrrrrrrrrrr..SS",
+"SS...rrrrrrrrrrr..r...SS",
+"SSS.....SSS..SSS.....SSS",
+".SSS...SSS....SSS...SSS.",
+"..SSSSSSS......SSSSSSS..",
+"...SSSSS........SSSSS...",
+"........................",
+"........................"],
 /* Abeja al rescate */
 varroa:[
 "................",
@@ -2413,26 +2828,26 @@ grano:[
 const svgCache={},cvCache={};
 function spriteSVG(name,attrs){
   if(svgCache[name])return svgCache[name].replace('<svg ','<svg '+(attrs||'')+' ');
-  const rows=S[name];if(!rows)return '';
+  const rows=S[name];if(!rows)return '';const n=rows.length;
   let out='';
-  rows.forEach((row,y)=>{let x=0;while(x<16){const ch=row[x];if(ch==='.'){x++;continue;}let x2=x;while(x2<16&&row[x2]===ch)x2++;out+=`<rect x="${x}" y="${y}" width="${x2-x}" height="1" fill="${PAL[ch]||'#f0f'}"/>`;x=x2;}});
-  const s=`<svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">${out}</svg>`;
+  rows.forEach((row,y)=>{let x=0;while(x<n){const ch=row[x];if(ch==='.'){x++;continue;}let x2=x;while(x2<n&&row[x2]===ch)x2++;out+=`<rect x="${x}" y="${y}" width="${x2-x}" height="1" fill="${PAL[ch]||'#f0f'}"/>`;x=x2;}});
+  const s=`<svg viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges" aria-hidden="true">${out}</svg>`;
   svgCache[name]=s;return s.replace('<svg ','<svg '+(attrs||'')+' ');
 }
 function spriteCanvas(name,scale){
   const key=name+'@'+scale;if(cvCache[key])return cvCache[key];
-  const rows=S[name];if(!rows)return null;
-  const c=document.createElement('canvas');c.width=16*scale;c.height=16*scale;const x=c.getContext('2d');
-  rows.forEach((row,y)=>{for(let i=0;i<16;i++){const ch=row[i];if(ch==='.')continue;x.fillStyle=PAL[ch]||'#f0f';x.fillRect(i*scale,y*scale,scale,scale);}});
+  const rows=S[name];if(!rows)return null;const n=rows.length;
+  const c=document.createElement('canvas');c.width=n*scale;c.height=n*scale;const x=c.getContext('2d');
+  rows.forEach((row,y)=>{for(let i=0;i<n;i++){const ch=row[i];if(ch==='.')continue;x.fillStyle=PAL[ch]||'#f0f';x.fillRect(i*scale,y*scale,scale,scale);}});
   cvCache[key]=c;return c;
 }
 // draw a sprite centered at (cx,cy) on ctx, with pixel scale, optional rotation (radians) and flip
 function draw(ctx,name,cx,cy,scale,rot,flip){
   const c=spriteCanvas(name,scale);if(!c)return;
   ctx.save();ctx.imageSmoothingEnabled=false;ctx.translate(Math.round(cx),Math.round(cy));if(rot)ctx.rotate(rot);if(flip)ctx.scale(-1,1);
-  ctx.drawImage(c,-8*scale,-8*scale);ctx.restore();
+  ctx.drawImage(c,-c.width/2,-c.height/2);ctx.restore();
 }
-return{PAL,S,svg:spriteSVG,canvas:spriteCanvas,draw,has:n=>!!S[n]};
+return{PAL,S,svg:spriteSVG,canvas:spriteCanvas,draw,has:n=>!!S[n],size:n=>S[n]?S[n].length:0};
 })();
 
 </script>
@@ -2462,7 +2877,7 @@ return{PAL,S,svg:spriteSVG,canvas:spriteCanvas,draw,has:n=>!!S[n]};
     <button class="btn secondary" id="touchBtn">Jugar tocando la pantalla</button>
     <p class="foot">Sostené el teléfono derecho, como para leer. Al empezar cada nivel se toma esa posición como punto de equilibrio.</p>
     <p class="foot"><a class="portada" href="../index.html" hidden>← Volver a la portada</a></p>
-    <p class="foot">Un proyecto de la Fundación Darío Donolo · Licencia CC BY-SA 4.0 · Versión 0.7</p>
+    <p class="foot">Un proyecto de la Fundación Darío Donolo · Licencia CC BY-SA 4.0 · Versión 0.8</p>
   </div>
 </div>
 
@@ -2496,7 +2911,7 @@ return{PAL,S,svg:spriteSVG,canvas:spriteCanvas,draw,has:n=>!!S[n]};
     </div>
     <button class="btn" id="againBtn">Jugar de nuevo</button>
     <p class="foot"><a class="portada" href="../index.html" hidden>← Volver a la portada</a></p>
-    <p class="foot">Abeja al rescate · Versión 0.7</p>
+    <p class="foot">Abeja al rescate · Versión 0.8</p>
   </div>
 </div>
 
@@ -2773,7 +3188,7 @@ function updateL2(dt){
 const PX=3; // escala de píxel del juego
 function drawBee(x,y,ang,face,t){
   ctx.save();if(G.inv>0&&Math.floor(t*14)%2===0)ctx.globalAlpha=0.45;
-  PIX.draw(ctx,Math.floor(t*16)%2?'abeja2':'abeja',x,y,PX,face==='up'?-Math.PI/2+ang:ang);
+  PIX.draw(ctx,Math.floor(t*16)%2?'abeja2':'abeja',x,y,2,face==='up'?-Math.PI/2+ang:ang);
   ctx.restore();
 }
 function drawFlower(x,y){PIX.draw(ctx,'flor',x,y,PX);}
